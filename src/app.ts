@@ -29,7 +29,7 @@ export class Game extends Phaser.Game {
 
 window.addEventListener("load", () => {
     let game: Game = new Game(config);
-    function resize() {
+    function resize(): void {
         let canvas: HTMLCanvasElement = document.querySelector("canvas");
         let ww: number = window.innerWidth;
         let wh: number = window.innerHeight;
@@ -43,7 +43,6 @@ window.addEventListener("load", () => {
             canvas.style.height = wh + "px";
         }
     }
-    // resize();
-    //window.addEventListener("resize", resize, false); // 偵聽事件 resize
-
+    resize();
+    window.addEventListener("resize", resize, false); // 偵聽事件 resize
 });

@@ -1,7 +1,7 @@
 
 
 export class GameScene extends Phaser.Scene {
-    private start1: Phaser.GameObjects.Sprite;
+    private start: Phaser.GameObjects.Sprite;
 
     constructor() {
         super({
@@ -39,11 +39,11 @@ export class GameScene extends Phaser.Scene {
 
         this.add.sprite(width, height - 50, "gameName", 0);
 
-        this.start1 = this.add
+        let start: Phaser.GameObjects.Sprite = this.add
             .sprite(width, height + 50, "start1", 0)
             .setInteractive();
 
-        this.start1.on("pointerdown", () => {
+        start.on("pointerdown", () => {
             this.startGame();
         });
     }
