@@ -1,44 +1,4 @@
-interface occupation {
-    /**
-     * 職業名稱
-     */
-    readonly occupationName: string;
-    /**
-     * 能力值
-     */
-    ability(): any;
-    /**
-     * 技能
-     * @param params 場景
-     * @returns 技能名稱
-     */
-    skills(params: any): string;
-    /**
-     * 死翹翹
-     * @param params 場景
-    */
-    dead(params: any): void;
-}
-
-
-export class SetWarrior extends Phaser.GameObjects.Sprite {
-    constructor(params) {
-        super(params.scene, params.x, params.y, params.key, params.frame);
-
-        // image
-        // this.setScale(3);
-        // this.setOrigin(150, 150);
-
-        // physics
-        this.scene.physics.world.enable(this);
-        this.body.allowGravity = false;
-        //this.body.setVelocityX(-200);
-        this.body.setSize(135, 121);
-
-        this.scene.add.existing(this);
-    }
-
-}
+import { occupation } from "interfaces/occupation";
 
 export class Warrior implements occupation {
 

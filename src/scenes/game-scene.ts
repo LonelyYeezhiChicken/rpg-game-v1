@@ -1,25 +1,9 @@
 
-import { Warrior, SetWarrior } from "../occupations/warrior";
+import { Warrior } from "../occupations/warrior";
+import { SetWarrior } from "../occupations/setOccupations/SetWarrior";
 
 export class GameScene extends Phaser.Scene {
     private start: Phaser.GameObjects.Sprite;
-    private warriors: Phaser.GameObjects.Group;
-    private warrior: Phaser.GameObjects.Sprite;
-    private wd: Warrior;
-
-    private addWarrior(x: number, y: number, frame: number): void {
-
-        // create a new pipe at the position x and y and add it to group
-        this.warriors.add(
-            new SetWarrior({
-                scene: this,
-                x: x,
-                y: y,
-                frame: frame,
-                key: "warrior"
-            })
-        );
-    }
 
     constructor() {
         super({
@@ -62,28 +46,6 @@ export class GameScene extends Phaser.Scene {
         let start: Phaser.GameObjects.Sprite = this.add
             .sprite(width, height + 50, "start", 0)
             .setInteractive();
-
-
-        this.warrior = new SetWarrior({
-            scene: this,
-            x: 100,
-            y: 100,
-            frame: 1,
-            key: "warrior"
-        });
-        this.wd = new Warrior();
-        console.log(this.wd.occupationName);
-        this.wd.dead(this);
-
-        //this.warrior.anims.play('right', true);
-
-        // this.warrior = this.add.sprite(50, 255, "man", 0).setInteractive();
-        // this.input.setDraggable(this.warrior);
-
-        // this.warriors = this.add.group({ classType: Warrior });
-
-        // this.addWarrior(20, 10, 0);
-        // this.addWarrior(200, 100, 1);
 
         start.on("pointerdown", () => {
             this.startGame();
