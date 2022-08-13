@@ -1,0 +1,36 @@
+{
+  "RpgGame": {
+    "files": [
+      { 
+      "type": "bitmapFont",
+      "key": "font",
+      "textureURL": "./src/assets/font/font.png",
+      "fontDataURL": "./src/assets/font/font.fnt"
+      },
+      {
+        "type": "image",
+        "key": "background",
+        "url": "./src/assets/backgrounds/bg_1.webp"
+      },
+      {
+        "type": "image",
+        "key": "start",
+        "url": "./src/assets/others/start/start1.png"
+      },
+      {
+        "type": "image",
+        "key": "gameName",
+        "url": "./src/assets/others/gameName/alpacaSceneName.png"
+      },
+      {
+        "type": "spritesheet",
+        "key": "warrior",
+        "url": "./src/assets/roles/Goblin.png",
+        "frameConfig": {
+          "frameWidth": 135,
+          "frameHeight": 121
+        }
+      }
+    ]
+  }
+}
