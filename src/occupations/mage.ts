@@ -1,11 +1,11 @@
 import { occupation } from "interfaces/occupation";
 
-export class Warrior implements occupation {
+export class Mage implements occupation {
 
     /**
      * 職業名稱
      */
-    public readonly occupationName: string = '戰士';
+    public readonly occupationName: string = '坦克';
     /**
     * 能力值
     */
@@ -19,14 +19,14 @@ export class Warrior implements occupation {
      */
     public skills(params: any): string {
         params.anims.create({
-            key: "warriorSkill",
-            frames: params.anims.generateFrameNumbers("warrior", { start: 0, end: 4 }),
+            key: "mageSkill",
+            frames: params.anims.generateFrameNumbers("mage", { start: 0, end: 4 }),
             frameRate: 10,
             repeat: -1,
         });
-        params.warrior.anims.play('warriorSkill', true);
+        params.mage.anims.play('mageSkill', true);
 
-        return '吃我棒棒槌!';
+        return '丟你小石石!';
     }
 
     /**
@@ -36,12 +36,12 @@ export class Warrior implements occupation {
     public dead(params: any): void {
 
         params.anims.create({
-            key: "warriorDead",
-            frames: params.anims.generateFrameNumbers("warrior", { start: 5, end: 9 }),
+            key: "mageDead",
+            frames: params.anims.generateFrameNumbers("mage", { start: 5, end: 9 }),
             frameRate: 10,
             repeat: -1,
         });
-        params.warrior.anims.play('warriorDead', true);
+        params.mage.anims.play('mageDead', true);
     }
 
     /**
@@ -52,25 +52,24 @@ export class Warrior implements occupation {
     walk(params: any, direction: string): void {
 
         params.anims.create({
-            key: "warriorWalk",
-            frames: params.anims.generateFrameNumbers("warrior", { start: 11, end: 16 }),
+            key: "mageWalk",
+            frames: params.anims.generateFrameNumbers("mage", { start: 11, end: 16 }),
             frameRate: 10,
             repeat: -1,
         });
         if (direction === 'left') {
-            params.warrior.flipX = true;
-            params.warrior.x -= 2
+            params.mage.flipX = true;
+            params.mage.x -= 2
         } else if (direction === 'up') {
-            params.warrior.y -= 2
+            params.mage.y -= 2
         } else if (direction === 'down') {
-            params.warrior.y += 2
-        }
-        else {
-            params.warrior.flipX = false;
-            params.warrior.x += 2
+            params.mage.y += 2
+        } else {
+            params.mage.flipX = false;
+            params.mage.x += 2
         }
 
-        params.warrior.anims.play('warriorWalk', true);
+        params.mage.anims.play('mageWalk', true);
     }
 }
 
