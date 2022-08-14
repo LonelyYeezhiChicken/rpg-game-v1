@@ -5,6 +5,7 @@ import { Mage } from "../occupations/mage";
 import { SetWarrior } from "../occupations/setOccupations/setWarrior";
 import { SetTank } from "../occupations/setOccupations/setTank";
 import { SetMage } from "../occupations/setOccupations/setMage";
+import { occupation } from "../occupations/interfaces/occupation";
 
 export class GameScene extends Phaser.Scene {
     private start: Phaser.GameObjects.Sprite;
@@ -12,9 +13,9 @@ export class GameScene extends Phaser.Scene {
     private tank: Phaser.GameObjects.Sprite;
     private mage: Phaser.GameObjects.Sprite;
     private keyboard: Phaser.Input.Keyboard.CursorKeys;
-    private wrr: Warrior;
-    private tan: Tank;
-    private mag: Mage;
+    private wrr: occupation;
+    private tan: occupation;
+    private mag: occupation;
 
     constructor() {
         super({
@@ -97,29 +98,29 @@ export class GameScene extends Phaser.Scene {
 
     update(time: number, delta: number): void {
         if (this.keyboard.right.isDown) {
-            this.wrr.walk(this, "right");
-            this.tan.walk(this, "right");
-            this.mag.walk(this, "right");
+            this.wrr.walk(this, this.warrior, "right");
+            this.tan.walk(this, this.tank, "right");
+            this.mag.walk(this, this.mage, "right");
 
         } else if (this.keyboard.left.isDown) {
-            this.wrr.walk(this, "left");
-            this.tan.walk(this, "left");
-            this.mag.walk(this, "left");
+            this.wrr.walk(this, this.warrior, "left");
+            this.tan.walk(this, this.tank, "left");
+            this.mag.walk(this, this.mage, "left");
         }
         else if (this.keyboard.down.isDown) {
-            this.wrr.walk(this, "down");
-            this.tan.walk(this, "down");
-            this.mag.walk(this, "down");
+            this.wrr.walk(this, this.warrior, "down");
+            this.tan.walk(this, this.tank, "down");
+            this.mag.walk(this, this.mage, "down");
         }
         else if (this.keyboard.up.isDown) {
-            this.wrr.walk(this, "up");
-            this.tan.walk(this, "up");
-            this.mag.walk(this, "up");
+            this.wrr.walk(this, this.warrior, "up");
+            this.tan.walk(this, this.tank, "up");
+            this.mag.walk(this, this.mage, "up");
         }
         else {
-            this.wrr.skills(this);
-            this.tan.skills(this);
-            this.mag.skills(this);
+            this.wrr.skills(this, this.warrior);
+            this.tan.skills(this, this.tank);
+            this.mag.skills(this, this.mage);
         }
     }
 
