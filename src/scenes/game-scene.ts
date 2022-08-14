@@ -1,16 +1,20 @@
 
 import { Warrior } from "../occupations/warrior";
 import { Tank } from "../occupations/tank";
-import { SetWarrior } from "../occupations/setOccupations/SetWarrior";
-import { SetTank } from "../occupations/setOccupations/SetTank";
+import { Mage } from "../occupations/mage";
+import { SetWarrior } from "../occupations/setOccupations/setWarrior";
+import { SetTank } from "../occupations/setOccupations/setTank";
+import { SetMage } from "../occupations/setOccupations/setMage";
 
 export class GameScene extends Phaser.Scene {
     private start: Phaser.GameObjects.Sprite;
     private warrior: Phaser.GameObjects.Sprite;
     private tank: Phaser.GameObjects.Sprite;
+    private mage: Phaser.GameObjects.Sprite;
     private keyboard: Phaser.Input.Keyboard.CursorKeys;
     private wrr: Warrior;
     private tan: Tank;
+    private mag: Mage;
 
     constructor() {
         super({
@@ -61,7 +65,7 @@ export class GameScene extends Phaser.Scene {
         this.warrior = new SetWarrior({
             scene: this,
             x: 50,
-            y: 100,
+            y: 50,
             frame: 0,
             key: "warrior"
         });
@@ -71,12 +75,22 @@ export class GameScene extends Phaser.Scene {
         this.tank = new SetTank({
             scene: this,
             x: 50,
-            y: 200,
+            y: 120,
             frame: 0,
             key: "tank"
         });
 
         this.tan = new Tank();
+
+        this.mage = new SetMage({
+            scene: this,
+            x: 50,
+            y: 250,
+            frame: 0,
+            key: "mage"
+        });
+
+        this.mag = new Mage();
 
         this.keyboard = this.input.keyboard.createCursorKeys()
     }
@@ -85,20 +99,27 @@ export class GameScene extends Phaser.Scene {
         if (this.keyboard.right.isDown) {
             this.wrr.walk(this, "right");
             this.tan.walk(this, "right");
+            this.mag.walk(this, "right");
 
         } else if (this.keyboard.left.isDown) {
             this.wrr.walk(this, "left");
             this.tan.walk(this, "left");
+            this.mag.walk(this, "left");
         }
         else if (this.keyboard.down.isDown) {
-            this.tan.dead(this);
+            this.wrr.walk(this, "down");
+            this.tan.walk(this, "down");
+            this.mag.walk(this, "down");
         }
         else if (this.keyboard.up.isDown) {
-            this.tan.skills(this);
+            this.wrr.walk(this, "up");
+            this.tan.walk(this, "up");
+            this.mag.walk(this, "up");
         }
         else {
             this.wrr.skills(this);
             this.tan.skills(this);
+            this.mag.skills(this);
         }
     }
 

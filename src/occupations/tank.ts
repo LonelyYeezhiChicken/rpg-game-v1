@@ -51,23 +51,21 @@ export class Tank implements occupation {
      */
     walk(params: any, direction: string): void {
 
+        params.anims.create({
+            key: "tankWalk",
+            frames: params.anims.generateFrameNumbers("tank", { start: 0, end: 7 }),
+            frameRate: 10,
+            repeat: -1,
+        });
         if (direction === 'left') {
             params.tank.flipX = true;
-            params.anims.create({
-                key: "tankWalk",
-                frames: params.anims.generateFrameNumbers("tank", { start: 0, end: 7 }),
-                frameRate: 10,
-                repeat: -1,
-            });
             params.tank.x -= 2
+        } else if (direction === 'up') {
+            params.tank.y -= 2
+        } else if (direction === 'down') {
+            params.tank.y += 2
         } else {
             params.tank.flipX = false;
-            params.anims.create({
-                key: "tankWalk",
-                frames: params.anims.generateFrameNumbers("tank", { start: 0, end: 7 }),
-                frameRate: 10,
-                repeat: -1,
-            });
             params.tank.x += 2
         }
 
