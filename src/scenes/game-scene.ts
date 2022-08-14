@@ -4,6 +4,7 @@ import { SetWarrior } from "../occupations/setOccupations/SetWarrior";
 
 export class GameScene extends Phaser.Scene {
     private start: Phaser.GameObjects.Sprite;
+    private warrior: Phaser.GameObjects.Sprite;
 
     constructor() {
         super({

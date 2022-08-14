@@ -44,5 +44,19 @@ export class Warrior implements occupation {
         params.warrior.anims.play('dead', true);
     }
 
+    /**
+     * 走路
+     * @param params 場景
+     * @param direction 方向
+     */
+    walk(params: any, direction: string): void {
+        params.anims.create({
+            key: "walk",
+            frames: params.anims.generateFrameNumbers("warrior", { start: 11, end: 16 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        params.warrior.anims.play('walk', true);
+    }
 }
 
