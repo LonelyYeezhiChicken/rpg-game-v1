@@ -18,4 +18,11 @@ export interface occupation {
      * @param params 場景
     */
     dead(params: any): void;
+
+    /**
+     * 走路
+     * @param params 場景
+     * @param direction 方向
+     */
+    walk(params: any, direction: string): void;
 }

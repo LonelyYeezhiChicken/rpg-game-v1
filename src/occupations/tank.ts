@@ -1,11 +1,11 @@
 import { occupation } from "interfaces/occupation";
 
-export class Warrior implements occupation {
+export class Tank implements occupation {
 
     /**
      * 職業名稱
      */
-    public readonly occupationName: string = '戰士';
+    public readonly occupationName: string = '坦克';
     /**
     * 能力值
     */
@@ -19,14 +19,14 @@ export class Warrior implements occupation {
      */
     public skills(params: any): string {
         params.anims.create({
-            key: "warriorSkill",
-            frames: params.anims.generateFrameNumbers("warrior", { start: 0, end: 4 }),
+            key: "tankSkill",
+            frames: params.anims.generateFrameNumbers("tank", { start: 8, end: 14 }),
             frameRate: 10,
             repeat: -1,
         });
-        params.warrior.anims.play('warriorSkill', true);
+        params.tank.anims.play('tankSkill', true);
 
-        return '吃我棒棒槌!';
+        return '賞你巴掌!';
     }
 
     /**
@@ -36,12 +36,12 @@ export class Warrior implements occupation {
     public dead(params: any): void {
 
         params.anims.create({
-            key: "warriorDead",
-            frames: params.anims.generateFrameNumbers("warrior", { start: 5, end: 9 }),
+            key: "tankDead",
+            frames: params.anims.generateFrameNumbers("tank", { start: 20, end: 24 }),
             frameRate: 10,
             repeat: -1,
         });
-        params.warrior.anims.play('warriorDead', true);
+        params.tank.anims.play('tankDead', true);
     }
 
     /**
@@ -52,26 +52,26 @@ export class Warrior implements occupation {
     walk(params: any, direction: string): void {
 
         if (direction === 'left') {
-            params.warrior.flipX = true;
+            params.tank.flipX = true;
             params.anims.create({
-                key: "warriorWalk",
-                frames: params.anims.generateFrameNumbers("warrior", { start: 11, end: 16 }),
+                key: "tankWalk",
+                frames: params.anims.generateFrameNumbers("tank", { start: 0, end: 7 }),
                 frameRate: 10,
                 repeat: -1,
             });
-            params.warrior.x -= 2
+            params.tank.x -= 2
         } else {
-            params.warrior.flipX = false;
+            params.tank.flipX = false;
             params.anims.create({
-                key: "warriorWalk",
-                frames: params.anims.generateFrameNumbers("warrior", { start: 11, end: 16 }),
+                key: "tankWalk",
+                frames: params.anims.generateFrameNumbers("tank", { start: 0, end: 7 }),
                 frameRate: 10,
                 repeat: -1,
             });
-            params.warrior.x += 2
+            params.tank.x += 2
         }
 
-        params.warrior.anims.play('warriorWalk', true);
+        params.tank.anims.play('tankWalk', true);
     }
 }
 
