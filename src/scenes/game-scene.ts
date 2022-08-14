@@ -1,10 +1,16 @@
 
 import { Warrior } from "../occupations/warrior";
+import { Tank } from "../occupations/tank";
 import { SetWarrior } from "../occupations/setOccupations/SetWarrior";
+import { SetTank } from "../occupations/setOccupations/SetTank";
 
 export class GameScene extends Phaser.Scene {
     private start: Phaser.GameObjects.Sprite;
     private warrior: Phaser.GameObjects.Sprite;
+    private tank: Phaser.GameObjects.Sprite;
+    private keyboard: Phaser.Input.Keyboard.CursorKeys;
+    private wrr: Warrior;
+    private tan: Tank;
 
     constructor() {
         super({
@@ -51,8 +57,50 @@ export class GameScene extends Phaser.Scene {
         start.on("pointerdown", () => {
             this.startGame();
         });
+
+        this.warrior = new SetWarrior({
+            scene: this,
+            x: 50,
+            y: 100,
+            frame: 0,
+            key: "warrior"
+        });
+
+        this.wrr = new Warrior();
+
+        this.tank = new SetTank({
+            scene: this,
+            x: 50,
+            y: 200,
+            frame: 0,
+            key: "tank"
+        });
+
+        this.tan = new Tank();
+
+        this.keyboard = this.input.keyboard.createCursorKeys()
     }
 
+    update(time: number, delta: number): void {
+        if (this.keyboard.right.isDown) {
+            this.wrr.walk(this, "right");
+            this.tan.walk(this, "right");
+
+        } else if (this.keyboard.left.isDown) {
+            this.wrr.walk(this, "left");
+            this.tan.walk(this, "left");
+        }
+        else if (this.keyboard.down.isDown) {
+            this.tan.dead(this);
+        }
+        else if (this.keyboard.up.isDown) {
+            this.tan.skills(this);
+        }
+        else {
+            this.wrr.skills(this);
+            this.tan.skills(this);
+        }
+    }
 
     /**
     * 場景跳轉

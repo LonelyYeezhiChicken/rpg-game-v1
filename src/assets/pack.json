@@ -30,6 +30,24 @@
           "frameWidth": 135,
           "frameHeight": 121
         }
+      },
+      {
+        "type": "spritesheet",
+        "key": "tank",
+        "url": "./src/assets/roles/GoblinTank.png",
+        "frameConfig": {
+          "frameWidth": 222,
+          "frameHeight": 194
+        }
+      },
+      {
+        "type": "spritesheet",
+        "key": "mage",
+        "url": "./src/assets/roles/GoblinMage.png",
+        "frameConfig": {
+          "frameWidth": 109,
+          "frameHeight": 96
+        }
       }
     ]
   }
