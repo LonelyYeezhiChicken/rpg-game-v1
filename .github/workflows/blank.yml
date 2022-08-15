@@ -27,4 +27,5 @@ jobs:
 
       - run: npm install 
       - run: npm install -g jscodeshift
+      - run: npm install phaser
       - run: npm start
