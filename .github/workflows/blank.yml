@@ -27,4 +27,4 @@ jobs:
 
       - run: npm install 
       - run: npm install -g jscodeshift
-      - run: npm start
+      - run: npm build
