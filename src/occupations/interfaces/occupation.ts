@@ -1,3 +1,5 @@
+import { AbilityDto } from "models/dtos/abilityDto";
+
 export abstract class occupation {
     /**
      * 職業名稱
@@ -21,7 +23,7 @@ export abstract class occupation {
     /**
      * 能力值
      */
-    public abstract ability(): any;
+    public abstract ability(data: AbilityDto): any;
     /**
      * 技能
      * @param params 場景
