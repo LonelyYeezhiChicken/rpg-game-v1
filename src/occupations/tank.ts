@@ -26,8 +26,12 @@ export class Tank extends occupation {
     /**
     * 能力值
     */
-    public ability(data: AbilityDto) {
-        throw new Error("Method not implemented.");
+    public ability(data: AbilityDto): AbilityDto {
+        data.accuracy = this.abilityRatio(data.accuracy, 0.8);
+        data.health = this.abilityRatio(data.health, 2);
+        data.luck = this.abilityRatio(data.luck, 2);
+        data.agility = this.abilityRatio(data.agility, 1.5);
+        return data;
     }
 
 }
