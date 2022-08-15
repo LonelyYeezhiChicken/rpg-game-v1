@@ -18,7 +18,14 @@ export abstract class occupation {
      */
     public abstract readonly startAndEnd: any;
 
-
+    /**
+     * 能力值倍率計算
+     * @param input 基礎能力
+     * @param ratio 倍率
+     */
+    protected abilityRatio(input: number, ratio: number): number {
+        return input * ratio;
+    }
 
     /**
      * 能力值

@@ -1,14 +1,6 @@
 
-export class SetMage extends Phaser.GameObjects.Sprite {
-    constructor(params) {
-        super(params.scene, params.x, params.y, params.key, params.frame);
+import { SetOccupation } from "../interfaces/setOccupation"
+export class SetMage extends SetOccupation {
 
-        // image
-        this.scene.physics.world.enable(this);
-        this.body.allowGravity = false;
-        this.body.setSize(135, 121);
-
-        this.scene.add.existing(this);
-    }
 
 }

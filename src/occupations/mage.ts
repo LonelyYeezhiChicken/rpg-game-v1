@@ -26,8 +26,12 @@ export class Mage extends occupation {
     /**
     * 能力值
     */
-    public ability(data: AbilityDto) {
-        throw new Error("Method not implemented.");
+    public ability(data: AbilityDto): AbilityDto {
+        data.intelligence = this.abilityRatio(data.intelligence, 1.5);
+        data.magic = this.abilityRatio(data.magic, 1.5);
+        data.health = this.abilityRatio(data.health, 0.8);
+        data.mattack = this.abilityRatio(data.mattack, 2);
+        return data;
     }
 }
 
