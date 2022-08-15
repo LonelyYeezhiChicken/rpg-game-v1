@@ -1,4 +1,5 @@
 import { occupation } from "./interfaces/occupation";
+import { AbilityDto } from "models/dtos/abilityDto";
 
 export class Mage extends occupation {
     /**
@@ -25,7 +26,7 @@ export class Mage extends occupation {
     /**
     * 能力值
     */
-    public ability() {
+    public ability(data: AbilityDto) {
         throw new Error("Method not implemented.");
     }
 }
