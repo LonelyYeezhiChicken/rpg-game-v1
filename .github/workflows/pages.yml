@@ -12,16 +12,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn'
 
-      - name: Install and Build
-        run: |
-          yarn
-          yarn install
-          yarn build
+      - run: npm i -g yarn
+      - run: npm i -g jscodeshift
+      - run: yarn install 
+      - run: yarn build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.2.0
