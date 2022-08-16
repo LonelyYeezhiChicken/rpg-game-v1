@@ -2,8 +2,8 @@
 import { Warrior } from "../occupations/warrior";
 import { Tank } from "../occupations/tank";
 import { Mage } from "../occupations/mage";
-import { SetWarrior } from "../occupations/setOccupations/setWarrior";
-import { SetTank } from "../occupations/setOccupations/setTank";
+import { SetWarrior } from "../occupations/setOccupations/SetWarrior";
+import { SetTank } from "../occupations/setOccupations/SetTank";
 import { SetMage } from "../occupations/setOccupations/setMage";
 import { occupation } from "../occupations/interfaces/occupation";
 
