@@ -34,7 +34,6 @@ jobs:
         run: |
           rm -rf node_modules/.cache
           yarn build
-          yarn export
           git init
           git config --global user.email  hibary.taiwan@gamil.com
           git config --global user.name chicken-ci
