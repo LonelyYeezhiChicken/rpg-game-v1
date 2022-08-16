@@ -9,9 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+      
     steps:
       - uses: actions/checkout@v2
+      - run: npm i -g yarn
+      - run: npm i -g jscodeshift
+      - run: yarn install 
       - uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -20,7 +23,6 @@ jobs:
       - name: Install and Build
         run: |
           yarn
-          yarn install
           yarn build
 
       - name: Deploy 🚀
