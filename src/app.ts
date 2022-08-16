@@ -1,11 +1,12 @@
 import "phaser";
 import { GameScene } from "./scenes/game-scene";
+import { RolesScene } from "./scenes/roles-scene";
 
 let config: GameConfig = {
     width: 600,
     height: 300,
     parent: "game",
-    scene: [GameScene],
+    scene: [GameScene, RolesScene],
     input: {
         keyboard: true
     },
