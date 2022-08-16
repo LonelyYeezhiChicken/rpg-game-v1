@@ -14,6 +14,11 @@
       },
       {
         "type": "image",
+        "key": "background2",
+        "url": "./src/assets/backgrounds/bg_2.webp"
+      },
+      {
+        "type": "image",
         "key": "start",
         "url": "./src/assets/others/start/start1.png"
       },
@@ -21,6 +26,25 @@
         "type": "image",
         "key": "gameName",
         "url": "./src/assets/others/gameName/alpacaSceneName.png"
+      }      
+    ]
+  },
+  "GameRoles":{
+    "files": [
+      {
+        "type": "image",
+        "key": "mageLogo",
+        "url": "../src/assets/roles/mageLogo.gif"
+      },
+      {
+        "type": "image",
+        "key": "tankLogo",
+        "url": "../src/assets/roles/tankLogo.gif"
+      },
+      {
+        "type": "image",
+        "key": "warriorLogo",
+        "url": "../src/assets/roles/warriorLogo.gif"
       },
       {
         "type": "spritesheet",
