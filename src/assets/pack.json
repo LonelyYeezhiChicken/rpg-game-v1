@@ -34,17 +34,17 @@
       {
         "type": "image",
         "key": "mageLogo",
-        "url": "../src/assets/roles/mageLogo.png"
+        "url": "./src/assets/roles/mageLogo.png"
       },
       {
         "type": "image",
         "key": "tankLogo",
-        "url": "../src/assets/roles/tankLogo.png"
+        "url": "./src/assets/roles/tankLogo.png"
       },
       {
         "type": "image",
         "key": "warriorLogo",
-        "url": "../src/assets/roles/warriorLogo.png"
+        "url": "./src/assets/roles/warriorLogo.png"
       },
       {
         "type": "spritesheet",
