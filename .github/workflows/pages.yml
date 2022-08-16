@@ -1,32 +1,47 @@
-name: deploy gh-pages
+name: git page
 
 on:
   push:
     branches: [main]
-
-  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
+    name: Build and deploy gh-pages
+    env:
+      commit_secret: ${{secrets.COMMIT_SECRET}}
+      USER_NAME   : LonelyYeezhiChicken
+      USER_EMAIL  : hibary.taiwan@gamil.com
     runs-on: ubuntu-latest
-      
+    
     steps:
-      - uses: actions/checkout@v2
-      - run: npm i -g yarn
-      - run: npm i -g jscodeshift
-      - run: yarn install 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'yarn'
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Install and Build
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.15.1'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Yarn Install
+        run: yarn
+
+      - name: deploy
         run: |
-          yarn
+          rm -rf node_modules/.cache
           yarn build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.2.0
-        with:
-          branch: gh-pages
-          folder: build
+          yarn export
+          git init
+          git config --global user.email  hibary.taiwan@gamil.com
+          git config --global user.name chicken-ci
+          git status
+          git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/LonelyYeezhiChicken/rpg-game-v1.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "Deploy game to gh-pages" 
+          git push origin gh-pages -f
+          echo 🤘 deploy gh-pages complete.
