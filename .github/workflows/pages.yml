@@ -39,8 +39,8 @@ jobs:
           git config --global user.name chicken-ci
           git status
           git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/LonelyYeezhiChicken/rpg-game-v1.git
-          git checkout -b gh-pages
+          git checkout -b gh-page
           git add --all
-          git commit -m "Deploy Game to gh-pages" 
-          git push origin gh-pages -f
-          echo 🤘 deploy gh-pages complete.
+          git commit -m "Deploy Game to gh-page" 
+          git push origin gh-page -f
+          echo 🤘 deploy gh-page complete.
