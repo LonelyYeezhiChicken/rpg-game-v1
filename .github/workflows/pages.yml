@@ -41,6 +41,6 @@ jobs:
           git remote add origin https://${{secrets.COMMIT_SECRET}}@github.com/LonelyYeezhiChicken/rpg-game-v1.git
           git checkout -b gh-pages
           git add --all
-          git commit -m "Deploy game to gh-pages" 
+          git commit -m "Deploy Game to gh-pages" 
           git push origin gh-pages -f
           echo 🤘 deploy gh-pages complete.
