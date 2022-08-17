@@ -2,7 +2,7 @@
 import { Dao } from "./interfaces/dao";
 
 /**
- * LocalStorage
+ * Local Storage
  */
 export class LocalStorageDao implements Dao {
 
@@ -21,8 +21,13 @@ export class LocalStorageDao implements Dao {
    * 讀取
    * @param key 唯一值
    */
-    read<T>(key: string): T {
-        return <T>localStorage.getItem(key);
+    read<T>(key: string): T | null {
+        let data: string | null = localStorage.getItem(key);
+
+        if (data === null)
+            return null;
+        else
+            return <T>JSON.parse(data);
     }
     /**
     * 更新
