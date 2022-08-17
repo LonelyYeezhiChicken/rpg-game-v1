@@ -5,6 +5,7 @@ import { SetWarrior } from "../occupations/setOccupations/setWarrior";
 import { SetTank } from "../occupations/setOccupations/setTank";
 import { SetMage } from "../occupations/setOccupations/setMage";
 import { occupation } from "../occupations/interfaces/occupation";
+import { OpKind } from "../models/enums/opKind";
 
 export class RolesScene extends Phaser.Scene {
     private tankBtn: Phaser.GameObjects.Sprite;
@@ -39,6 +40,11 @@ export class RolesScene extends Phaser.Scene {
     private disableRole(role: Phaser.GameObjects.Sprite): void {
         role.alpha = 0;//透明度設為 0 
         this.physics.world.disable(role)//刪除物理性質
+    }
+    /**顯示角色 */
+    private enableRole(role: Phaser.GameObjects.Sprite): void {
+        role.alpha = 100;//透明度設為 100 
+        this.physics.world.enable(role)//恢復物理性質        
     }
     /** 建立角色
      * 
@@ -85,9 +91,9 @@ export class RolesScene extends Phaser.Scene {
     private createProfilePicture(width: number, height: number): void {
         let roleStrWidth = width - 30;
 
-        this.warriorBtn = this.add.sprite(roleStrWidth, height, "warriorLogo");
-        this.tankBtn = this.add.sprite(roleStrWidth + 120, height, "tankLogo");
-        this.mageBtn = this.add.sprite(roleStrWidth + 240, height, "mageLogo");
+        this.warriorBtn = this.add.sprite(roleStrWidth, height, "warriorLogo").setInteractive();;
+        this.tankBtn = this.add.sprite(roleStrWidth + 120, height, "tankLogo").setInteractive();;
+        this.mageBtn = this.add.sprite(roleStrWidth + 240, height, "mageLogo").setInteractive();;
         this.add.text(roleStrWidth, height + 40, this.wrr.occupationName, this.textStyle());
         this.add.text(roleStrWidth + 120, height + 40, this.tan.occupationName, this.textStyle());
         this.add.text(roleStrWidth + 240, height + 40, this.mag.occupationName, this.textStyle());
@@ -120,35 +126,36 @@ export class RolesScene extends Phaser.Scene {
 
         // 3. 選角視窗
         this.createProfilePicture(width, height);
-
-        this.keyboard = this.input.keyboard.createCursorKeys()
+        console.log('hi');
+        // 4. 事件註冊
+        this.warriorBtn.on("pointerdown", () => {
+            this.clickEvent(OpKind.warrior);
+        });
+        this.tankBtn.on("pointerdown", () => {
+            this.clickEvent(OpKind.tank);
+        });
+        this.mageBtn.on("pointerdown", () => {
+            this.clickEvent(OpKind.mage);
+        });
     }
 
-    update(time: number, delta: number): void {
-        if (this.keyboard.right.isDown) {
-            this.wrr.walk(this, this.warrior, "right");
-            this.tan.walk(this, this.tank, "right");
-            this.mag.walk(this, this.mage, "right");
-
-        } else if (this.keyboard.left.isDown) {
-            this.wrr.walk(this, this.warrior, "left");
-            this.tan.walk(this, this.tank, "left");
-            this.mag.walk(this, this.mage, "left");
-        }
-        else if (this.keyboard.down.isDown) {
-            this.wrr.walk(this, this.warrior, "down");
-            this.tan.walk(this, this.tank, "down");
-            this.mag.walk(this, this.mage, "down");
-        }
-        else if (this.keyboard.up.isDown) {
-            this.wrr.walk(this, this.warrior, "up");
-            this.tan.walk(this, this.tank, "up");
-            this.mag.walk(this, this.mage, "up");
-        }
-        else {
-            this.wrr.skills(this, this.warrior);
-            this.tan.skills(this, this.tank);
-            this.mag.skills(this, this.mage);
+    private clickEvent(name: OpKind): void {
+        switch (name) {
+            case OpKind.warrior:
+                this.enableRole(this.warrior);
+                this.disableRole(this.tank);
+                this.disableRole(this.mage);
+                break;
+            case OpKind.tank:
+                this.disableRole(this.warrior);
+                this.enableRole(this.tank);
+                this.disableRole(this.mage);
+                break;
+            case OpKind.mage:
+                this.disableRole(this.warrior);
+                this.disableRole(this.tank);
+                this.enableRole(this.mage);
+                break;
         }
     }
 }
