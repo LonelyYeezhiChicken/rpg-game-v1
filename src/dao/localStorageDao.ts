@@ -15,7 +15,7 @@ export class LocalStorageDao implements Dao {
         // 序列化物件
         let data: string = JSON.stringify(value);
         // 存入
-        localStorage.setItem(key, data);
+        localStorage.setItem(key, btoa(data));
     }
     /**
    * 讀取
@@ -26,8 +26,10 @@ export class LocalStorageDao implements Dao {
 
         if (data === null)
             return null;
-        else
-            return <T>JSON.parse(data);
+        else {
+            let newData: string = atob(data);
+            return <T>JSON.parse(newData);
+        }
     }
     /**
     * 更新
@@ -47,5 +49,4 @@ export class LocalStorageDao implements Dao {
     delete(key: string): void {
         localStorage.removeItem(key);
     }
-
 }
