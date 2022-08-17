@@ -2,7 +2,7 @@
 import { Dao } from "./interfaces/dao";
 
 /**
- * LocalStorage
+ * Local Storage
  */
 export class LocalStorageDao implements Dao {
 
@@ -15,14 +15,21 @@ export class LocalStorageDao implements Dao {
         // 序列化物件
         let data: string = JSON.stringify(value);
         // 存入
-        localStorage.setItem(key, data);
+        localStorage.setItem(key, btoa(data));
     }
     /**
    * 讀取
    * @param key 唯一值
    */
-    read<T>(key: string): T {
-        return <T>localStorage.getItem(key);
+    read<T>(key: string): T | null {
+        let data: string | null = localStorage.getItem(key);
+
+        if (data === null)
+            return null;
+        else {
+            let newData: string = atob(data);
+            return <T>JSON.parse(newData);
+        }
     }
     /**
     * 更新
@@ -42,5 +49,4 @@ export class LocalStorageDao implements Dao {
     delete(key: string): void {
         localStorage.removeItem(key);
     }
-
 }

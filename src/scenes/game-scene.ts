@@ -1,14 +1,16 @@
-
-
+import { LocalStorageDao } from "../dao/localStorageDao";
+import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
+import { AbilityDto } from "../models/dtos/abilityDto";
 
 export class GameScene extends Phaser.Scene {
     private start: Phaser.GameObjects.Sprite;
-
+    private readonly opRepo: OccupationRepo;
 
     constructor() {
         super({
             key: "GameScene"
         });
+        this.opRepo = new OccupationRepository(new LocalStorageDao);
     }
 
     /**
@@ -56,6 +58,42 @@ export class GameScene extends Phaser.Scene {
     * 場景跳轉
     */
     startGame(): void {
+        this.opRepo.createRole(this.createNewRole());
         this.game.scene.start("RolesScene");
+    }
+
+    /**
+     * 建立角色
+     * 隨機產生數值
+     * @returns 
+     */
+    private createNewRole(): AbilityDto {
+        let ability: AbilityDto = new AbilityDto();
+        ability.level = 1;
+        ability.health = this.random(1000, 2000);
+        ability.magic = this.random(500, 1000);
+        ability.actionPoint = this.random(100, 500);
+        ability.strength = this.random(30, 100);
+        ability.intelligence = this.random(30, 100);
+        ability.accuracy = this.random(30, 100);
+        ability.luck = this.random(30, 100);
+        ability.agility = this.random(30, 100);
+        ability.attack = this.random(30, 100);
+        ability.mattack = this.random(30, 100);
+        console.log('初始值 = ');
+        console.log(ability);
+        return ability;
+    }
+
+    /**
+     * 取得亂數
+     * @param min 
+     * @param max 
+     * @returns 兩者之間的整數亂數
+     */
+    private random(min: number, max: number): number {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min) + min);
     }
 }

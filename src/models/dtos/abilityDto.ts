@@ -3,47 +3,47 @@ export class AbilityDto {
     /** 等級
      * LV
      */
-    private _level: number;
+    private _level: number = 1;
     /** 血量
      * HP
      */
-    private _health: number;
+    private _health: number = 1;
     /** 魔力
     * MP
     */
-    private _magic: number;
+    private _magic: number = 1;
     /** 行動值
     * AP
     */
-    private _actionPoint: number;
+    private _actionPoint: number = 1;
     /** 攻擊力(基礎傷害)
     * STR
     */
-    private _strength: number;
+    private _strength: number = 1;
     /** 智力
     * Inte
     */
-    private _intelligence: number;
+    private _intelligence: number = 1;
     /** 命中
     * ACC
     */
-    private _accuracy: number;
+    private _accuracy: number = 1;
     /** 幸運
     * LUK
     */
-    private _luck: number;
+    private _luck: number = 1;
     /** 靈巧,迴避
     * AGI
     */
-    private _agility: number;
+    private _agility: number = 1;
     /** 物理攻擊
     * ATK
     */
-    private _attack: number;
+    private _attack: number = 1;
     /** 魔法傷害
     * MATK
     */
-    private _mattack: number;
+    private _mattack: number = 1;
 
     /** 等級
       * LV

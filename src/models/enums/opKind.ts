@@ -1,4 +1,4 @@
-enum OpKind {
+export enum OpKind {
     /**
      * 法師
      */

@@ -9,7 +9,7 @@ export interface Dao {
      * 讀取
      * @param key 唯一值
      */
-    read<T>(key: string): T;
+    read<T>(key: string): T | null;
     /**
      * 更新
      * @param key 唯一值
