@@ -31,7 +31,8 @@ export class OccupationRepository implements OccupationRepo {
     * @param data 角色初始值
     */
     createRole(data: AbilityDto): void {
-        this.dao.create<AbilityDto>(this.firstKey + "newRole", data);
+        if (this.dao.read<AbilityDto>(this.firstKey + "newRole") === null)
+            this.dao.create<AbilityDto>(this.firstKey + "newRole", data);
     }
     /**
      * 更新角色初始值
