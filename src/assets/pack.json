@@ -41,7 +41,17 @@
         "key": "info",
         "url": "./src/assets/roles/info.png"
       },
-       {
+      {
+        "type": "image",
+        "key": "line",
+        "url": "./src/assets/roles/line.png"
+      },
+      {
+        "type": "image",
+        "key": "close",
+        "url": "./src/assets/roles/close.png"
+      },
+      {
         "type": "image",
         "key": "info2",
         "url": "./src/assets/roles/info2.png"
