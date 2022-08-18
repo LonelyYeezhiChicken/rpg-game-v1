@@ -17,6 +17,9 @@ export class RolesScene extends Phaser.Scene {
     private mage: Phaser.GameObjects.Sprite;
     private arrow: Phaser.GameObjects.Sprite;
     private roleInfo: Phaser.GameObjects.Sprite;
+    private close: Phaser.GameObjects.Sprite;
+    private line: Phaser.GameObjects.Sprite;
+    private infoArr: Array<Phaser.GameObjects.Text>;
     private wrr: occupation;
     private tan: occupation;
     private mag: occupation;
@@ -56,7 +59,7 @@ export class RolesScene extends Phaser.Scene {
         // 新增角色
         this.warrior = new SetWarrior({
             scene: this,
-            x: 55,
+            x: this.roleInfo.x - 100,
             y: 150,
             frame: 0,
             key: "warrior"
@@ -64,7 +67,7 @@ export class RolesScene extends Phaser.Scene {
 
         this.tank = new SetTank({
             scene: this,
-            x: 60,
+            x: this.roleInfo.x - 100,
             y: 120,
             frame: 0,
             key: "tank"
@@ -72,7 +75,7 @@ export class RolesScene extends Phaser.Scene {
 
         this.mage = new SetMage({
             scene: this,
-            x: 45,
+            x: this.roleInfo.x - 110,
             y: 170,
             frame: 0,
             key: "mage"
@@ -81,10 +84,6 @@ export class RolesScene extends Phaser.Scene {
         this.disableRole(this.warrior);
         this.disableRole(this.tank);
         this.disableRole(this.mage);
-
-        this.wrr = new Warrior();
-        this.tan = new Tank();
-        this.mag = new Mage();
     }
     /** 建立選角視窗
      * 
@@ -92,14 +91,17 @@ export class RolesScene extends Phaser.Scene {
      * @param height 場景中間點(高)
      */
     private createProfilePicture(width: number, height: number): void {
-        let roleStrWidth = width - 30;
+        let roleStrWidth = width - 200;
 
+        this.wrr = new Warrior();
+        this.tan = new Tank();
+        this.mag = new Mage();
         this.warriorBtn = this.add.sprite(roleStrWidth, height, "warriorLogo").setInteractive();
-        this.tankBtn = this.add.sprite(roleStrWidth + 120, height, "tankLogo").setInteractive();
-        this.mageBtn = this.add.sprite(roleStrWidth + 240, height, "mageLogo").setInteractive();
+        this.tankBtn = this.add.sprite(roleStrWidth + 200, height, "tankLogo").setInteractive();
+        this.mageBtn = this.add.sprite(roleStrWidth + 400, height, "mageLogo").setInteractive();
         this.add.text(roleStrWidth, height + 40, this.wrr.occupationName, this.textStyle());
-        this.add.text(roleStrWidth + 120, height + 40, this.tan.occupationName, this.textStyle());
-        this.add.text(roleStrWidth + 240, height + 40, this.mag.occupationName, this.textStyle());
+        this.add.text(roleStrWidth + 200, height + 40, this.tan.occupationName, this.textStyle());
+        this.add.text(roleStrWidth + 400, height + 40, this.mag.occupationName, this.textStyle());
     }
     /**點擊角色
      * 
@@ -127,6 +129,37 @@ export class RolesScene extends Phaser.Scene {
                 break;
         }
     }
+    /**角色資訊 */
+    private createRoleInfo(): void {
+        let textS: any = {
+            font: "20px Arial",
+            fill: "#FAFFFE",
+            align: "left",
+            backgroundColor: "#344648"
+        };
+
+        this.infoArr = [
+            this.add.text(this.line.x + 10, this.line.y - 100, 'LV: 1 ', textS),
+            this.add.text(this.line.x + 100, this.line.y - 100, 'HP: 1 ', textS),
+
+            this.add.text(this.line.x + 10, this.line.y - 65, 'MP: 1 ', textS),
+            this.add.text(this.line.x + 100, this.line.y - 65, 'STR: 1 ', textS),
+
+            this.add.text(this.line.x + 10, this.line.y - 30, 'Inte: 1 ', textS),
+            this.add.text(this.line.x + 100, this.line.y - 30, 'ACC: 1 ', textS),
+
+            this.add.text(this.line.x + 10, this.line.y + 5, 'LUK: 1 ', textS),
+            this.add.text(this.line.x + 100, this.line.y + 5, 'AGI: 1 ', textS),
+
+            this.add.text(this.line.x + 10, this.line.y + 40, 'ATK: 1 ', textS),
+            this.add.text(this.line.x + 100, this.line.y + 40, 'MATK: 1 ', textS)
+        ];
+
+        // 先隱藏
+        // this.infoArr.forEach(v => {
+        //     v.visible = false;
+        // });
+    }
     /**
      * 載入素材
      */
@@ -150,14 +183,11 @@ export class RolesScene extends Phaser.Scene {
         // 設定位置
         bg.setPosition(width, height);
 
-        // 2. 建立角色
-        this.createAllRole();
-
-        // 3. 選角視窗
+        // 2. 選角視窗
         this.createProfilePicture(width, height);
 
 
-        // 4. 事件註冊
+        // 3. 事件註冊
         this.warriorBtn.on("pointerdown", () => {
             this.clickProfilePicture(OpKind.warrior);
         });
@@ -168,14 +198,14 @@ export class RolesScene extends Phaser.Scene {
             this.clickProfilePicture(OpKind.mage);
         });
 
-        // 5. 箭頭
+        // 4. 箭頭
         this.arrow = this.add
             .sprite(-10, -10, "arrow")
             .setScale(0.2, 0.2)
             .setAngle(90);
 
 
-        // 6. 角色資訊
+        // 5. 角色資訊
         this.roleInfo = new RoleInfo({
             scene: this,
             x: width,
@@ -183,6 +213,24 @@ export class RolesScene extends Phaser.Scene {
             frame: 0,
             key: "info"
         }).setScale(1.5, 1.5);
-        this.disableRole(this.roleInfo);
+
+        this.close = this.add.sprite(465, 45, "close")
+            .setScale(0.5, 0.5)
+            .setInteractive();
+
+        this.close.on("pointerdown", () => {
+            console.log('關閉視窗');
+        });
+        //this.disableRole(this.roleInfo);
+        //this.disableRole(this.close);
+        this.line = this.add
+            .sprite(width - 30, 150, "line")
+            .setScale(1, 0.8);
+        // this.disableRole( this.line);
+        // 6. 建立角色
+        this.createAllRole();
+
+        // 7. 建立角色資訊
+        this.createRoleInfo();
     }
 }
