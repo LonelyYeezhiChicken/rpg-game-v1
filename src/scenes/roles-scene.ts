@@ -6,6 +6,7 @@ import { SetTank } from "../occupations/setOccupations/setTank";
 import { SetMage } from "../occupations/setOccupations/setMage";
 import { occupation } from "../occupations/interfaces/occupation";
 import { OpKind } from "../models/enums/opKind";
+import { RoleInfo } from "../component/roleInfo";
 
 export class RolesScene extends Phaser.Scene {
     private tankBtn: Phaser.GameObjects.Sprite;
@@ -14,10 +15,11 @@ export class RolesScene extends Phaser.Scene {
     private warrior: Phaser.GameObjects.Sprite;
     private tank: Phaser.GameObjects.Sprite;
     private mage: Phaser.GameObjects.Sprite;
-    private keyboard: Phaser.Input.Keyboard.CursorKeys;
+    private arrow: Phaser.GameObjects.Sprite;
     private wrr: occupation;
     private tan: occupation;
     private mag: occupation;
+
 
     constructor() {
         super({
@@ -98,6 +100,32 @@ export class RolesScene extends Phaser.Scene {
         this.add.text(roleStrWidth + 120, height + 40, this.tan.occupationName, this.textStyle());
         this.add.text(roleStrWidth + 240, height + 40, this.mag.occupationName, this.textStyle());
     }
+    /**點擊角色
+     * 
+     * @param name 
+     */
+    private clickProfilePicture(name: OpKind): void {
+        switch (name) {
+            case OpKind.warrior:
+                this.enableRole(this.warrior);
+                this.disableRole(this.tank);
+                this.disableRole(this.mage);
+                this.arrow.setPosition(this.warriorBtn.x, this.warriorBtn.y - 100);
+                break;
+            case OpKind.tank:
+                this.disableRole(this.warrior);
+                this.enableRole(this.tank);
+                this.disableRole(this.mage);
+                this.arrow.setPosition(this.tankBtn.x, this.tankBtn.y - 100);
+                break;
+            case OpKind.mage:
+                this.disableRole(this.warrior);
+                this.disableRole(this.tank);
+                this.enableRole(this.mage);
+                this.arrow.setPosition(this.mageBtn.x, this.mageBtn.y - 100);
+                break;
+        }
+    }
     /**
      * 載入素材
      */
@@ -126,36 +154,23 @@ export class RolesScene extends Phaser.Scene {
 
         // 3. 選角視窗
         this.createProfilePicture(width, height);
-        console.log('hi');
+
+
         // 4. 事件註冊
         this.warriorBtn.on("pointerdown", () => {
-            this.clickEvent(OpKind.warrior);
+            this.clickProfilePicture(OpKind.warrior);
         });
         this.tankBtn.on("pointerdown", () => {
-            this.clickEvent(OpKind.tank);
+            this.clickProfilePicture(OpKind.tank);
         });
         this.mageBtn.on("pointerdown", () => {
-            this.clickEvent(OpKind.mage);
+            this.clickProfilePicture(OpKind.mage);
         });
-    }
 
-    private clickEvent(name: OpKind): void {
-        switch (name) {
-            case OpKind.warrior:
-                this.enableRole(this.warrior);
-                this.disableRole(this.tank);
-                this.disableRole(this.mage);
-                break;
-            case OpKind.tank:
-                this.disableRole(this.warrior);
-                this.enableRole(this.tank);
-                this.disableRole(this.mage);
-                break;
-            case OpKind.mage:
-                this.disableRole(this.warrior);
-                this.disableRole(this.tank);
-                this.enableRole(this.mage);
-                break;
-        }
+        // 5. 箭頭
+        this.arrow = this.add
+            .sprite(-10, -10, "arrow")
+            .setScale(0.2, 0.2)
+            .setAngle(90);
     }
 }
