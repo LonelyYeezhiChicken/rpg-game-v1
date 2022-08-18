@@ -16,6 +16,7 @@ export class RolesScene extends Phaser.Scene {
     private tank: Phaser.GameObjects.Sprite;
     private mage: Phaser.GameObjects.Sprite;
     private arrow: Phaser.GameObjects.Sprite;
+    private roleInfo: Phaser.GameObjects.Sprite;
     private wrr: occupation;
     private tan: occupation;
     private mag: occupation;
@@ -93,9 +94,9 @@ export class RolesScene extends Phaser.Scene {
     private createProfilePicture(width: number, height: number): void {
         let roleStrWidth = width - 30;
 
-        this.warriorBtn = this.add.sprite(roleStrWidth, height, "warriorLogo").setInteractive();;
-        this.tankBtn = this.add.sprite(roleStrWidth + 120, height, "tankLogo").setInteractive();;
-        this.mageBtn = this.add.sprite(roleStrWidth + 240, height, "mageLogo").setInteractive();;
+        this.warriorBtn = this.add.sprite(roleStrWidth, height, "warriorLogo").setInteractive();
+        this.tankBtn = this.add.sprite(roleStrWidth + 120, height, "tankLogo").setInteractive();
+        this.mageBtn = this.add.sprite(roleStrWidth + 240, height, "mageLogo").setInteractive();
         this.add.text(roleStrWidth, height + 40, this.wrr.occupationName, this.textStyle());
         this.add.text(roleStrWidth + 120, height + 40, this.tan.occupationName, this.textStyle());
         this.add.text(roleStrWidth + 240, height + 40, this.mag.occupationName, this.textStyle());
@@ -172,5 +173,16 @@ export class RolesScene extends Phaser.Scene {
             .sprite(-10, -10, "arrow")
             .setScale(0.2, 0.2)
             .setAngle(90);
+
+
+        // 6. 角色資訊
+        this.roleInfo = new RoleInfo({
+            scene: this,
+            x: width,
+            y: 150,
+            frame: 0,
+            key: "info"
+        }).setScale(1.5, 1.5);
+        this.disableRole(this.roleInfo);
     }
 }
