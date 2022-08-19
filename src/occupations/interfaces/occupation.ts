@@ -24,7 +24,7 @@ export abstract class occupation {
      * @param ratio 倍率
      */
     protected abilityRatio(input: number, ratio: number): number {
-        return input * ratio;
+        return Math.floor(input * ratio);
     }
 
     /**

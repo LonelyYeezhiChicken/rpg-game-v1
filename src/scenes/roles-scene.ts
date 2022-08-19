@@ -78,7 +78,7 @@ export class RolesScene extends Phaser.Scene {
         };
         return [
             this.add.text(this.lineStartX + 10, this.lineStartY - 100, `LV: ${data.level} `, textS),
-            this.add.text(this.lineStartX + 100, this.lineStartY - 100, `HP: ${data.health} `, textS),
+            this.add.text(this.lineStartX + 90, this.lineStartY - 100, `HP: ${data.health} `, textS),
 
             this.add.text(this.lineStartX + 10, this.lineStartY - 65, `MP: ${data.magic} `, textS),
             this.add.text(this.lineStartX + 100, this.lineStartY - 65, `STR: ${data.strength} `, textS),
