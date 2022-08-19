@@ -29,10 +29,11 @@ export class Warrior extends occupation {
     * 能力值
     */
     public ability(data: AbilityDto): AbilityDto {
-        data.attack = this.abilityRatio(data.attack, 1.5);
-        data.actionPoint = this.abilityRatio(data.actionPoint, 1.5);
-        data.health = this.abilityRatio(data.health, 1.5);
-        return data;
+        let newData: AbilityDto = JSON.parse(JSON.stringify(data));
+        newData.attack = this.abilityRatio(newData.attack, 1.5);
+        newData.actionPoint = this.abilityRatio(newData.actionPoint, 1.5);
+        newData.health = this.abilityRatio(newData.health, 1.5);
+        return newData;
     }
 }
 

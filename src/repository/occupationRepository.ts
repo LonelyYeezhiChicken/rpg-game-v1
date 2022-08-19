@@ -15,6 +15,11 @@ export interface OccupationRepo {
      * @param data 角色初始值
      */
     updateRole(roleName: OpKind, data: AbilityDto): void;
+    /**
+     * 取得角色
+     * @param role 角色
+     */
+    Load(role: OpKind): AbilityDto;
 }
 
 export class OccupationRepository implements OccupationRepo {
@@ -31,15 +36,21 @@ export class OccupationRepository implements OccupationRepo {
     * @param data 角色初始值
     */
     createRole(data: AbilityDto): void {
-        if (this.dao.read<AbilityDto>(this.firstKey + "newRole") === null)
-            this.dao.create<AbilityDto>(this.firstKey + "newRole", data);
+        if (this.dao.read<AbilityDto>(this.firstKey + OpKind.newRole.toString()) === null)
+            this.dao.create<AbilityDto>(this.firstKey + OpKind.newRole.toString(), data);
     }
     /**
      * 更新角色初始值
      * @param data 角色初始值
      */
     updateRole(roleName: OpKind, data: AbilityDto): void {
-        throw new Error("Method not implemented.");
+        this.dao.create<AbilityDto>(this.firstKey + roleName.toString(), data);
     }
-
+    /**
+     * 取得角色
+     * @param role 角色
+     */
+    Load(role: OpKind): AbilityDto {
+        return this.dao.read<AbilityDto>(this.firstKey + OpKind.newRole.toString());
+    }
 }
