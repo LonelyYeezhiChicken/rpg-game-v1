@@ -27,11 +27,12 @@ export class Tank extends occupation {
     * 能力值
     */
     public ability(data: AbilityDto): AbilityDto {
-        data.accuracy = this.abilityRatio(data.accuracy, 0.8);
-        data.health = this.abilityRatio(data.health, 2);
-        data.luck = this.abilityRatio(data.luck, 2);
-        data.agility = this.abilityRatio(data.agility, 1.5);
-        return data;
+        let newData: AbilityDto = JSON.parse(JSON.stringify(data));
+        newData.accuracy = this.abilityRatio(newData.accuracy, 0.8);
+        newData.health = this.abilityRatio(newData.health, 2);
+        newData.luck = this.abilityRatio(newData.luck, 2);
+        newData.agility = this.abilityRatio(newData.agility, 1.5);
+        return newData;
     }
 
 }

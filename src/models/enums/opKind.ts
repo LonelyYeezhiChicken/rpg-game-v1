@@ -1,4 +1,5 @@
 export enum OpKind {
+    newRole,
     /**
      * 法師
      */

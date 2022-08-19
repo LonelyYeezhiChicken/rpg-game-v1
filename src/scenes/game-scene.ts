@@ -81,8 +81,6 @@ export class GameScene extends Phaser.Scene {
         ability.agility = this.random(30, 100);
         ability.attack = this.random(30, 100);
         ability.mattack = this.random(30, 100);
-        console.log('初始值 = ');
-        console.log(ability);
         return ability;
     }
 

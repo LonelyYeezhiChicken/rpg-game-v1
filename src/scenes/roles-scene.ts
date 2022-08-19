@@ -7,8 +7,12 @@ import { SetMage } from "../occupations/setOccupations/setMage";
 import { occupation } from "../occupations/interfaces/occupation";
 import { OpKind } from "../models/enums/opKind";
 import { RoleInfo } from "../component/roleInfo";
+import { AbilityDto } from "../models/dtos/abilityDto";
+import { LocalStorageDao } from "../dao/localStorageDao";
+import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
 
 export class RolesScene extends Phaser.Scene {
+    private readonly opRepo: OccupationRepo;
     private tankBtn: Phaser.GameObjects.Sprite;
     private warriorBtn: Phaser.GameObjects.Sprite;
     private mageBtn: Phaser.GameObjects.Sprite;
@@ -19,7 +23,9 @@ export class RolesScene extends Phaser.Scene {
     private roleInfo: Phaser.GameObjects.Sprite;
     private close: Phaser.GameObjects.Sprite;
     private line: Phaser.GameObjects.Sprite;
-    private infoArr: Array<Phaser.GameObjects.Text>;
+    private infoWarArr: Array<Phaser.GameObjects.Text>;
+    private infoTankArr: Array<Phaser.GameObjects.Text>;
+    private infoMageArr: Array<Phaser.GameObjects.Text>;
     private wrr: occupation;
     private tan: occupation;
     private mag: occupation;
@@ -34,6 +40,7 @@ export class RolesScene extends Phaser.Scene {
         super({
             key: "RolesScene"
         });
+        this.opRepo = new OccupationRepository(new LocalStorageDao());
     }
     /** 文字 style
      * 
@@ -56,6 +63,35 @@ export class RolesScene extends Phaser.Scene {
     private enableRole(role: Phaser.GameObjects.Sprite): void {
         role.alpha = 100;//透明度設為 100 
         this.physics.world.enable(role)//恢復物理性質        
+    }
+    /**生成角色資訊
+     * 
+     * @param thisArr 角色陣列
+     * @param data 資料
+     */
+    private createInfo(data: AbilityDto): Array<Phaser.GameObjects.Text> {
+        let textS: any = {
+            font: "20px Arial",
+            fill: "#FAFFFE",
+            align: "left",
+            backgroundColor: "#344648"
+        };
+        return [
+            this.add.text(this.lineStartX + 10, this.lineStartY - 100, `LV: ${data.level} `, textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY - 100, `HP: ${data.health} `, textS),
+
+            this.add.text(this.lineStartX + 10, this.lineStartY - 65, `MP: ${data.magic} `, textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY - 65, `STR: ${data.strength} `, textS),
+
+            this.add.text(this.lineStartX + 10, this.lineStartY - 30, `Inte: ${data.intelligence} `, textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY - 30, `ACC: ${data.accuracy} `, textS),
+
+            this.add.text(this.lineStartX + 10, this.lineStartY + 5, `LUK: ${data.luck} `, textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY + 5, `AGI: ${data.agility} `, textS),
+
+            this.add.text(this.lineStartX + 10, this.lineStartY + 40, `ATK: ${data.attack} `, textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY + 40, `MATK: ${data.mattack} `, textS)
+        ];
     }
     /** 建立角色
      * 
@@ -141,34 +177,23 @@ export class RolesScene extends Phaser.Scene {
     }
     /**角色資訊 */
     private createRoleInfo(): void {
-        let textS: any = {
-            font: "20px Arial",
-            fill: "#FAFFFE",
-            align: "left",
-            backgroundColor: "#344648"
-        };
+        let data: AbilityDto = this.opRepo.Load(OpKind.newRole);
+        // 產生能力值
+        let wrInfo: AbilityDto = this.wrr.ability(data);
+        let tkInfo: AbilityDto = this.tan.ability(data);
+        let mgInfo: AbilityDto = this.mag.ability(data);
+        // 存入
+        this.opRepo.updateRole(OpKind.warrior, wrInfo);
+        this.opRepo.updateRole(OpKind.tank, tkInfo);
+        this.opRepo.updateRole(OpKind.mage, mgInfo);
 
-        this.infoArr = [
-            this.add.text(this.lineStartX + 10, this.lineStartY - 100, 'LV: 1 ', textS),
-            this.add.text(this.lineStartX + 100, this.lineStartY - 100, 'HP: 1 ', textS),
+        this.infoWarArr = this.createInfo(wrInfo);
+        this.infoTankArr = this.createInfo(tkInfo);
+        this.infoMageArr = this.createInfo(mgInfo);
 
-            this.add.text(this.lineStartX + 10, this.lineStartY - 65, 'MP: 1 ', textS),
-            this.add.text(this.lineStartX + 100, this.lineStartY - 65, 'STR: 1 ', textS),
-
-            this.add.text(this.lineStartX + 10, this.lineStartY - 30, 'Inte: 1 ', textS),
-            this.add.text(this.lineStartX + 100, this.lineStartY - 30, 'ACC: 1 ', textS),
-
-            this.add.text(this.lineStartX + 10, this.lineStartY + 5, 'LUK: 1 ', textS),
-            this.add.text(this.lineStartX + 100, this.lineStartY + 5, 'AGI: 1 ', textS),
-
-            this.add.text(this.lineStartX + 10, this.lineStartY + 40, 'ATK: 1 ', textS),
-            this.add.text(this.lineStartX + 100, this.lineStartY + 40, 'MATK: 1 ', textS)
-        ];
-
-        // 先隱藏
-        this.infoArr.forEach(v => {
-            v.visible = false;
-        });
+        this.infoWarArr.forEach(v => { v.visible = false });
+        this.infoTankArr.forEach(v => { v.visible = false });
+        this.infoMageArr.forEach(v => { v.visible = false });
     }
     /**開啟選角視窗
      * 
@@ -179,9 +204,27 @@ export class RolesScene extends Phaser.Scene {
         this.enableRole(this.roleInfo);
         this.enableRole(this.close);
         this.enableRole(this.line);
-        this.infoArr.forEach(v => {
-            v.visible = true;
-        });
+
+        switch (this.nowRole) {
+            case OpKind.warrior:
+                this.disableRole(this.warrior);
+                this.infoWarArr.forEach(v => {
+                    v.visible = true;
+                });
+                break;
+            case OpKind.tank:
+                this.disableRole(this.tank);
+                this.infoTankArr.forEach(v => {
+                    v.visible = true;
+                });
+                break;
+            case OpKind.mage:
+                this.disableRole(this.mage);
+                this.infoMageArr.forEach(v => {
+                    v.visible = true;
+                });
+                break;
+        }
     }
     /**關閉選角視窗
      * 
@@ -191,19 +234,25 @@ export class RolesScene extends Phaser.Scene {
         this.disableRole(this.roleInfo);
         this.disableRole(this.close);
         this.disableRole(this.line);
-        this.infoArr.forEach(v => {
-            v.visible = false;
-        });
 
         switch (this.nowRole) {
             case OpKind.warrior:
                 this.disableRole(this.warrior);
+                this.infoWarArr.forEach(v => {
+                    v.visible = false;
+                });
                 break;
             case OpKind.tank:
                 this.disableRole(this.tank);
+                this.infoTankArr.forEach(v => {
+                    v.visible = false;
+                });
                 break;
             case OpKind.mage:
                 this.disableRole(this.mage);
+                this.infoMageArr.forEach(v => {
+                    v.visible = false;
+                });
                 break;
         }
     }

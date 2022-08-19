@@ -27,11 +27,12 @@ export class Mage extends occupation {
     * 能力值
     */
     public ability(data: AbilityDto): AbilityDto {
-        data.intelligence = this.abilityRatio(data.intelligence, 1.5);
-        data.magic = this.abilityRatio(data.magic, 1.5);
-        data.health = this.abilityRatio(data.health, 0.8);
-        data.mattack = this.abilityRatio(data.mattack, 2);
-        return data;
+        let newData: AbilityDto = JSON.parse(JSON.stringify(data));
+        newData.intelligence = this.abilityRatio(newData.intelligence, 1.5);
+        newData.magic = this.abilityRatio(newData.magic, 1.5);
+        newData.health = this.abilityRatio(newData.health, 0.8);
+        newData.mattack = this.abilityRatio(newData.mattack, 2);
+        return newData;
     }
 }
 
