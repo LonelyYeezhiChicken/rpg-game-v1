@@ -23,6 +23,11 @@ export class RolesScene extends Phaser.Scene {
     private wrr: occupation;
     private tan: occupation;
     private mag: occupation;
+    private nowRole: OpKind;
+    private pointStart: number;
+    private lineStartX: number;
+    private lineStartY: number;
+    private isOpenInfo: boolean = false;
 
 
     constructor() {
@@ -59,7 +64,7 @@ export class RolesScene extends Phaser.Scene {
         // 新增角色
         this.warrior = new SetWarrior({
             scene: this,
-            x: this.roleInfo.x - 100,
+            x: this.pointStart - 100,
             y: 150,
             frame: 0,
             key: "warrior"
@@ -67,7 +72,7 @@ export class RolesScene extends Phaser.Scene {
 
         this.tank = new SetTank({
             scene: this,
-            x: this.roleInfo.x - 100,
+            x: this.pointStart - 100,
             y: 120,
             frame: 0,
             key: "tank"
@@ -75,7 +80,7 @@ export class RolesScene extends Phaser.Scene {
 
         this.mage = new SetMage({
             scene: this,
-            x: this.roleInfo.x - 110,
+            x: this.pointStart - 110,
             y: 170,
             frame: 0,
             key: "mage"
@@ -108,6 +113,11 @@ export class RolesScene extends Phaser.Scene {
      * @param name 
      */
     private clickProfilePicture(name: OpKind): void {
+        if (this.isOpenInfo === true)
+            return;
+
+        this.isOpenInfo = true;
+        this.openRoleInfo(name);
         switch (name) {
             case OpKind.warrior:
                 this.enableRole(this.warrior);
@@ -139,26 +149,63 @@ export class RolesScene extends Phaser.Scene {
         };
 
         this.infoArr = [
-            this.add.text(this.line.x + 10, this.line.y - 100, 'LV: 1 ', textS),
-            this.add.text(this.line.x + 100, this.line.y - 100, 'HP: 1 ', textS),
+            this.add.text(this.lineStartX + 10, this.lineStartY - 100, 'LV: 1 ', textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY - 100, 'HP: 1 ', textS),
 
-            this.add.text(this.line.x + 10, this.line.y - 65, 'MP: 1 ', textS),
-            this.add.text(this.line.x + 100, this.line.y - 65, 'STR: 1 ', textS),
+            this.add.text(this.lineStartX + 10, this.lineStartY - 65, 'MP: 1 ', textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY - 65, 'STR: 1 ', textS),
 
-            this.add.text(this.line.x + 10, this.line.y - 30, 'Inte: 1 ', textS),
-            this.add.text(this.line.x + 100, this.line.y - 30, 'ACC: 1 ', textS),
+            this.add.text(this.lineStartX + 10, this.lineStartY - 30, 'Inte: 1 ', textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY - 30, 'ACC: 1 ', textS),
 
-            this.add.text(this.line.x + 10, this.line.y + 5, 'LUK: 1 ', textS),
-            this.add.text(this.line.x + 100, this.line.y + 5, 'AGI: 1 ', textS),
+            this.add.text(this.lineStartX + 10, this.lineStartY + 5, 'LUK: 1 ', textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY + 5, 'AGI: 1 ', textS),
 
-            this.add.text(this.line.x + 10, this.line.y + 40, 'ATK: 1 ', textS),
-            this.add.text(this.line.x + 100, this.line.y + 40, 'MATK: 1 ', textS)
+            this.add.text(this.lineStartX + 10, this.lineStartY + 40, 'ATK: 1 ', textS),
+            this.add.text(this.lineStartX + 100, this.lineStartY + 40, 'MATK: 1 ', textS)
         ];
 
         // 先隱藏
-        // this.infoArr.forEach(v => {
-        //     v.visible = false;
-        // });
+        this.infoArr.forEach(v => {
+            v.visible = false;
+        });
+    }
+    /**開啟選角視窗
+     * 
+     * @param name 角色
+     */
+    private openRoleInfo(name: OpKind): void {
+        this.nowRole = name;
+        this.enableRole(this.roleInfo);
+        this.enableRole(this.close);
+        this.enableRole(this.line);
+        this.infoArr.forEach(v => {
+            v.visible = true;
+        });
+    }
+    /**關閉選角視窗
+     * 
+     * @param name 角色
+     */
+    private closeRoleInfo(): void {
+        this.disableRole(this.roleInfo);
+        this.disableRole(this.close);
+        this.disableRole(this.line);
+        this.infoArr.forEach(v => {
+            v.visible = false;
+        });
+
+        switch (this.nowRole) {
+            case OpKind.warrior:
+                this.disableRole(this.warrior);
+                break;
+            case OpKind.tank:
+                this.disableRole(this.tank);
+                break;
+            case OpKind.mage:
+                this.disableRole(this.mage);
+                break;
+        }
     }
     /**
      * 載入素材
@@ -198,12 +245,12 @@ export class RolesScene extends Phaser.Scene {
             this.clickProfilePicture(OpKind.mage);
         });
 
+
         // 4. 箭頭
         this.arrow = this.add
             .sprite(-10, -10, "arrow")
             .setScale(0.2, 0.2)
             .setAngle(90);
-
 
         // 5. 角色資訊
         this.roleInfo = new RoleInfo({
@@ -214,19 +261,30 @@ export class RolesScene extends Phaser.Scene {
             key: "info"
         }).setScale(1.5, 1.5);
 
-        this.close = this.add.sprite(465, 45, "close")
+        this.close = this.add.sprite(465, 45, "close", 0)
             .setScale(0.5, 0.5)
             .setInteractive();
-
+        this.physics.world.enable(this.close);
+        this.close.body.allowGravity = false;
         this.close.on("pointerdown", () => {
-            console.log('關閉視窗');
+            this.isOpenInfo = false;
+            this.closeRoleInfo();
         });
-        //this.disableRole(this.roleInfo);
-        //this.disableRole(this.close);
+
+        this.pointStart = this.roleInfo.x;
+        this.disableRole(this.roleInfo);
+        this.disableRole(this.close);
+
         this.line = this.add
             .sprite(width - 30, 150, "line")
             .setScale(1, 0.8);
-        // this.disableRole( this.line);
+
+        this.physics.world.enable(this.line);
+        this.line.body.allowGravity = false;
+        this.lineStartX = this.line.x;
+        this.lineStartY = this.line.y;
+        this.disableRole(this.line);
+
         // 6. 建立角色
         this.createAllRole();
 
