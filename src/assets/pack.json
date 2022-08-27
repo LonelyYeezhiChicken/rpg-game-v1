@@ -97,6 +97,15 @@
           "frameWidth": 109,
           "frameHeight": 96
         }
+      },
+      {
+        "type": "spritesheet",
+        "key": "badGuy",
+        "url": "./src/assets/monster/badGuy.png",
+        "frameConfig": {
+          "frameWidth": 185,
+          "frameHeight": 201
+        }
       }
     ]
   }
