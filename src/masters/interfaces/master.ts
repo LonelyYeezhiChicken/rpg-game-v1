@@ -1,10 +1,10 @@
-import { AbilityDto } from "src/models/dtos/abilityDto";
+import { AbilityDto } from "models/dtos/abilityDto";
 
 export abstract class Masters {
     /**
     * 職業名稱
     */
-    public abstract readonly occupationName: string;
+    public abstract readonly name: string;
     /**
      * 技能名稱
      */
