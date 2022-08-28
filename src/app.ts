@@ -7,8 +7,7 @@ let config: GameConfig = {
     width: 600,
     height: 300,
     parent: "game",
-    //scene: [GameScene, RolesScene, PlayScene],
-    scene: [PlayScene, GameScene, RolesScene],
+    scene: [GameScene, RolesScene, PlayScene],
     input: {
         keyboard: true
     },

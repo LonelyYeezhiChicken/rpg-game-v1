@@ -20,9 +20,9 @@ export class BadGuy extends Masters {
      * 各式起始與結束
      */
     public readonly startAndEnd: any = {
-        skills: { start: 8, end: 14 },
-        dead: { start: 20, end: 24 },
-        walk: { start: 0, end: 7 }
+        skills: { start: 7, end: 13 },
+        dead: { start: 14, end: 16 },
+        walk: { start: 0, end: 5 }
     }
     /**
     * 能力值

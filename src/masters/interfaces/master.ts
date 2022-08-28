@@ -37,6 +37,7 @@ export abstract class Masters {
      * @returns 技能名稱
      */
     public skills(params: any, role: any): string {
+        role.flipX = true;
         params.anims.create({
             key: this.modelName + 'Skill',
             frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.skills),
@@ -52,13 +53,14 @@ export abstract class Masters {
      * @param params 場景
     */
     public dead(params: any, role: any): void {
+        role.flipX = true;
         params.anims.create({
             key: this.modelName + 'Dead',
             frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.dead),
             frameRate: 10,
             repeat: -1,
         });
-        role.anims.play(this.modelName + 'Dead', true);
+        role.anims.play(this.modelName + 'Dead');
     }
 
     /**

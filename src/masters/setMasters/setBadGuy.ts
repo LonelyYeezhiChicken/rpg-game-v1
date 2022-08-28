@@ -5,7 +5,8 @@ export class SetBadGuy extends Phaser.GameObjects.Sprite {
         // image
         this.scene.physics.world.enable(this);
         this.body.allowGravity = false;
-        this.body.setSize(135, 121);
+        this.body.setSize(90, 150);
+
 
         this.scene.add.existing(this);
     }

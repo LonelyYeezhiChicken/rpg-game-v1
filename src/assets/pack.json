@@ -103,8 +103,8 @@
         "key": "badGuy",
         "url": "./src/assets/monster/badGuy.png",
         "frameConfig": {
-          "frameWidth": 185,
-          "frameHeight": 201
+          "frameWidth": 110,
+          "frameHeight": 120
         }
       }
     ]
