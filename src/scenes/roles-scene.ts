@@ -1,14 +1,7 @@
-import { Warrior } from "../occupations/warrior";
-import { Tank } from "../occupations/tank";
-import { Mage } from "../occupations/mage";
-import { SetWarrior } from "../occupations/setOccupations/setWarrior";
-import { SetTank } from "../occupations/setOccupations/setTank";
-import { SetMage } from "../occupations/setOccupations/setMage";
-import { occupation } from "../occupations/interfaces/occupation";
-import { OpKind } from "../models/enums/opKind";
-import { RoleInfo } from "../component/roleInfo";
-import { AbilityDto } from "../models/dtos/abilityDto";
-import { LocalStorageDao } from "../dao/localStorageDao";
+import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation } from "../occupations/index";
+import { AbilityDto, OpKind } from "../models/index";
+import { RoleInfo } from "../component/index";
+import { LocalStorageDao } from "../dao/index";
 import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
 
 export class RolesScene extends Phaser.Scene {

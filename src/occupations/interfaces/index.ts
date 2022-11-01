@@ -1,0 +1,1 @@
+export { occupation } from './occupation'
