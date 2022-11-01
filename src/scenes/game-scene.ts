@@ -1,6 +1,6 @@
-import { LocalStorageDao } from "../dao/localStorageDao";
-import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
-import { AbilityDto } from "../models/dtos/abilityDto";
+import { LocalStorageDao } from "../dao/index";
+import { OccupationRepo, OccupationRepository } from "../repository/index";
+import { AbilityDto } from "../models/index";
 
 export class GameScene extends Phaser.Scene {
     private start: Phaser.GameObjects.Sprite;
