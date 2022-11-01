@@ -1,0 +1,1 @@
+export { OccupationRepo, OccupationRepository } from './occupationRepository'

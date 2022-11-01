@@ -1,7 +1,5 @@
 import "phaser";
-import { GameScene } from "./scenes/game-scene";
-import { RolesScene } from "./scenes/roles-scene";
-import { PlayScene } from "./scenes/play-scene";
+import { GameScene, RolesScene, PlayScene } from "./scenes/index";
 
 let config: GameConfig = {
     width: 600,

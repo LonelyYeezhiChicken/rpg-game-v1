@@ -1,6 +1,4 @@
-import { BadGuy } from "../masters/badGuy";
-import { SetBadGuy } from "../masters/setMasters/setBadGuy";
-import { Masters } from "../masters/interfaces/master";
+import { BadGuy, SetBadGuy, Masters } from "../masters/index";
 
 export class PlayScene extends Phaser.Scene {
     private badguy: Phaser.GameObjects.Sprite;
