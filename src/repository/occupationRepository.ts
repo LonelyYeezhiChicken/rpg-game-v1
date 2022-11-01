@@ -1,7 +1,7 @@
 
 import { AbilityDto } from "../models/dtos/abilityDto";
 import { OpKind } from "../models/enums/opKind";
-import { Dao } from "../dao/interfaces/dao"
+import { Dao } from "../dao/index"
 
 export interface OccupationRepo {
     /**
