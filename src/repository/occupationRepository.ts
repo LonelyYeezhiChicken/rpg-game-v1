@@ -20,6 +20,15 @@ export interface OccupationRepo {
      * @param role 角色
      */
     Load(role: OpKind): AbilityDto;
+    /**
+     * 設定使用者的選角
+     * @param role 
+     */
+    setUserRole(role: OpKind): void;
+    /**
+     * 取得使用者的選角
+     */
+    getUserRole(): OpKind;
 }
 
 export class OccupationRepository implements OccupationRepo {
@@ -52,5 +61,18 @@ export class OccupationRepository implements OccupationRepo {
      */
     Load(role: OpKind): AbilityDto {
         return this.dao.read<AbilityDto>(this.firstKey + OpKind.newRole.toString());
+    }
+    /**
+    * 設定使用者的選角
+    * @param role 
+    */
+    setUserRole(role: OpKind): void {
+        this.dao.create<OpKind>(this.firstKey + "setUserRole", role);
+    }
+    /**
+     * 取得使用者的選角
+     */
+    getUserRole(): OpKind {
+        return this.dao.read<OpKind>(this.firstKey + "setUserRole");
     }
 }
