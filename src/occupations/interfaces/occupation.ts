@@ -66,7 +66,7 @@ export abstract class occupation {
      * @param params 場景
      * @param direction 方向
      */
-    walk(params: any, role: any, direction: string): void {
+    public walk(params: any, role: any, direction: string): void {
         params.anims.create({
             key: this.modelName + 'Walk',
             frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.walk),

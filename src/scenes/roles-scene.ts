@@ -2,9 +2,11 @@ import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation } from ".
 import { AbilityDto, OpKind } from "../models/index";
 import { RoleInfo } from "../component/index";
 import { LocalStorageDao } from "../dao/index";
+import { SceneUtil } from "../utils/index";
 import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
 
 export class RolesScene extends Phaser.Scene {
+    private sceneUtil: SceneUtil;
     private readonly opRepo: OccupationRepo;
     private tankBtn: Phaser.GameObjects.Sprite;
     private warriorBtn: Phaser.GameObjects.Sprite;
@@ -34,29 +36,10 @@ export class RolesScene extends Phaser.Scene {
             key: "RolesScene"
         });
         this.opRepo = new OccupationRepository(new LocalStorageDao());
+        this.sceneUtil = new SceneUtil(this);
     }
-    /** 文字 style
-     * 
-     * @returns 
-     */
-    private textStyle(): any {
-        return {
-            font: "32px Arial",
-            fill: "#FAFFFE",
-            align: "left",
-            backgroundColor: "#344648"
-        }
-    }
-    /**隱形角色 */
-    private disableRole(role: Phaser.GameObjects.Sprite): void {
-        role.alpha = 0;//透明度設為 0 
-        this.physics.world.disable(role)//刪除物理性質
-    }
-    /**顯示角色 */
-    private enableRole(role: Phaser.GameObjects.Sprite): void {
-        role.alpha = 100;//透明度設為 100 
-        this.physics.world.enable(role)//恢復物理性質        
-    }
+
+
     /**生成角色資訊
      * 
      * @param thisArr 角色陣列
@@ -115,9 +98,9 @@ export class RolesScene extends Phaser.Scene {
             key: "mage"
         });
 
-        this.disableRole(this.warrior);
-        this.disableRole(this.tank);
-        this.disableRole(this.mage);
+        this.sceneUtil.disableRole(this.warrior);
+        this.sceneUtil.disableRole(this.tank);
+        this.sceneUtil.disableRole(this.mage);
     }
     /** 建立選角視窗
      * 
@@ -133,9 +116,9 @@ export class RolesScene extends Phaser.Scene {
         this.warriorBtn = this.add.sprite(roleStrWidth, height, "warriorLogo").setInteractive();
         this.tankBtn = this.add.sprite(roleStrWidth + 200, height, "tankLogo").setInteractive();
         this.mageBtn = this.add.sprite(roleStrWidth + 400, height, "mageLogo").setInteractive();
-        this.add.text(roleStrWidth, height + 40, this.wrr.occupationName, this.textStyle());
-        this.add.text(roleStrWidth + 200, height + 40, this.tan.occupationName, this.textStyle());
-        this.add.text(roleStrWidth + 400, height + 40, this.mag.occupationName, this.textStyle());
+        this.add.text(roleStrWidth, height + 40, this.wrr.occupationName, SceneUtil.textStyle());
+        this.add.text(roleStrWidth + 200, height + 40, this.tan.occupationName, SceneUtil.textStyle());
+        this.add.text(roleStrWidth + 400, height + 40, this.mag.occupationName, SceneUtil.textStyle());
     }
     /**點擊角色
      * 
@@ -149,21 +132,21 @@ export class RolesScene extends Phaser.Scene {
         this.openRoleInfo(name);
         switch (name) {
             case OpKind.warrior:
-                this.enableRole(this.warrior);
-                this.disableRole(this.tank);
-                this.disableRole(this.mage);
+                this.sceneUtil.enableRole(this.warrior);
+                this.sceneUtil.disableRole(this.tank);
+                this.sceneUtil.disableRole(this.mage);
                 this.arrow.setPosition(this.warriorBtn.x, this.warriorBtn.y - 100);
                 break;
             case OpKind.tank:
-                this.disableRole(this.warrior);
-                this.enableRole(this.tank);
-                this.disableRole(this.mage);
+                this.sceneUtil.disableRole(this.warrior);
+                this.sceneUtil.enableRole(this.tank);
+                this.sceneUtil.disableRole(this.mage);
                 this.arrow.setPosition(this.tankBtn.x, this.tankBtn.y - 100);
                 break;
             case OpKind.mage:
-                this.disableRole(this.warrior);
-                this.disableRole(this.tank);
-                this.enableRole(this.mage);
+                this.sceneUtil.disableRole(this.warrior);
+                this.sceneUtil.disableRole(this.tank);
+                this.sceneUtil.enableRole(this.mage);
                 this.arrow.setPosition(this.mageBtn.x, this.mageBtn.y - 100);
                 break;
         }
@@ -194,55 +177,56 @@ export class RolesScene extends Phaser.Scene {
      */
     private openRoleInfo(name: OpKind): void {
         this.nowRole = name;
-        this.enableRole(this.roleInfo);
-        this.enableRole(this.close);
-        this.enableRole(this.line);
+        this.sceneUtil.enableRole(this.roleInfo);
+        this.sceneUtil.enableRole(this.close);
+        this.sceneUtil.enableRole(this.line);
 
         switch (this.nowRole) {
             case OpKind.warrior:
-                this.disableRole(this.warrior);
+                this.sceneUtil.disableRole(this.warrior);
                 this.infoWarArr.forEach(v => {
                     v.visible = true;
                 });
                 break;
             case OpKind.tank:
-                this.disableRole(this.tank);
+                this.sceneUtil.disableRole(this.tank);
                 this.infoTankArr.forEach(v => {
                     v.visible = true;
                 });
                 break;
             case OpKind.mage:
-                this.disableRole(this.mage);
+                this.sceneUtil.disableRole(this.mage);
                 this.infoMageArr.forEach(v => {
                     v.visible = true;
                 });
                 break;
         }
+        this.opRepo.setUserRole(this.nowRole);
     }
     /**關閉選角視窗
      * 
      * @param name 角色
      */
     private closeRoleInfo(): void {
-        this.disableRole(this.roleInfo);
-        this.disableRole(this.close);
-        this.disableRole(this.line);
+        this.sceneUtil.disableRole(this.roleInfo);
+        this.sceneUtil.disableRole(this.close);
+        this.sceneUtil.disableRole(this.line);
 
         switch (this.nowRole) {
             case OpKind.warrior:
-                this.disableRole(this.warrior);
+                this.sceneUtil.disableRole(this.warrior);
                 this.infoWarArr.forEach(v => {
                     v.visible = false;
                 });
                 break;
             case OpKind.tank:
-                this.disableRole(this.tank);
+                this.sceneUtil.disableRole(this.tank);
                 this.infoTankArr.forEach(v => {
                     v.visible = false;
                 });
                 break;
             case OpKind.mage:
-                this.disableRole(this.mage);
+                this.sceneUtil.disableRole(this.mage);
                 this.infoMageArr.forEach(v => {
                     v.visible = false;
                 });
@@ -314,8 +298,8 @@ export class RolesScene extends Phaser.Scene {
         });
 
         this.pointStart = this.roleInfo.x;
-        this.disableRole(this.roleInfo);
-        this.disableRole(this.close);
+        this.sceneUtil.disableRole(this.roleInfo);
+        this.sceneUtil.disableRole(this.close);
 
         this.line = this.add
             .sprite(width - 30, 150, "line")
@@ -325,7 +309,7 @@ export class RolesScene extends Phaser.Scene {
         this.line.body.allowGravity = false;
         this.lineStartX = this.line.x;
         this.lineStartY = this.line.y;
-        this.disableRole(this.line);
+        this.sceneUtil.disableRole(this.line);
 
         // 6. 建立角色
         this.createAllRole();
