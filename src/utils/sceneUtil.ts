@@ -1,5 +1,5 @@
 export class SceneUtil {
-    private scene;
+    private scene: { physics: { world: { disable: (arg0: Phaser.GameObjects.Sprite) => void; enable: (arg0: Phaser.GameObjects.Sprite) => void; }; }; };
 
     constructor(scene: any) {
         this.scene = scene;

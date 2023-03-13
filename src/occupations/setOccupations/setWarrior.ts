@@ -1,6 +1,6 @@
 
 export class SetWarrior extends Phaser.GameObjects.Sprite {
-    constructor(params) {
+    constructor(params: { scene: any; x: any; y: any; frame: any; key: any; }) {
         super(params.scene, params.x, params.y, params.key, params.frame);
 
         // image
