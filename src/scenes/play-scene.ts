@@ -118,7 +118,7 @@ export class PlayScene extends Phaser.Scene {
                 this.userRole = new Mage();
                 break;
         }
-        // this.userRole.walk(this, this.user, 'right');
-        this.userRole.dead(this, this.user);
+        this.userRole.walk(this, this.user, 'right');
+        // this.userRole.dead(this, this.user);
     }
 }
