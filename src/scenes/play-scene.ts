@@ -12,8 +12,9 @@ export class PlayScene extends Phaser.Scene {
     private bgy: Masters;
     private userRole: occupation;
     private userChose: OpKind;
-    private pointStart: number;
-
+    private isMoving: boolean = false;
+    private lastDirection: string = 'none';
+    private isAck: boolean = false;
 
     constructor() {
         super({
@@ -97,7 +98,6 @@ export class PlayScene extends Phaser.Scene {
         // 設定位置
         bg.setPosition(width, height);
 
-
         this.userChose = this.opRepo.getUserRole();
         // 2. 建立角色
         this.createAllRole();
@@ -118,7 +118,43 @@ export class PlayScene extends Phaser.Scene {
                 this.userRole = new Mage();
                 break;
         }
-        this.userRole.walk(this, this.user, 'right');
-        // this.userRole.dead(this, this.user);
+        // this.userRole.walk(this, this.user, 'right');
+        //this.userRole.dead(this, this.user);
+        this.userRole.stop(this, this.user, 'right');
     }
+
+    update(time: number, delta: number): void {
+        const cursorKeys = this.input.keyboard.createCursorKeys();
+
+        if (cursorKeys.left.isDown || cursorKeys.right.isDown || cursorKeys.up.isDown || cursorKeys.down.isDown) {
+            if (cursorKeys.left.isDown) {
+                this.userRole.walk(this, this.user, 'left');
+                this.lastDirection = 'left';
+            } else if (cursorKeys.right.isDown) {
+                this.userRole.walk(this, this.user, 'right');
+                this.lastDirection = 'right';
+            } else if (cursorKeys.up.isDown) {
+                this.userRole.walk(this, this.user, 'up');
+            } else if (cursorKeys.down.isDown) {
+                this.userRole.walk(this, this.user, 'down');
+            }
+            this.isMoving = true;
+        } else {
+            if (this.isMoving) {
+                this.userRole.stop(this, this.user, this.lastDirection);
+                this.isMoving = false;
+            }
+        }
+
+        if (cursorKeys.space.isDown) {
+            this.userRole.skills(this, this.user);
+            this.isAck = true;
+        } else {
+            if (this.isAck) {
+                this.userRole.stop(this, this.user, this.lastDirection);
+                this.isAck = false;
+            }
+        }
+    }
+
 }

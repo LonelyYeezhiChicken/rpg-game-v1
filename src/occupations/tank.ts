@@ -21,7 +21,8 @@ export class Tank extends occupation {
     public readonly startAndEnd: any = {
         skills: { start: 8, end: 14 },
         dead: { start: 20, end: 24 },
-        walk: { start: 0, end: 7 }
+        walk: { start: 0, end: 7 },
+        stop: { start: 0, end: 0 },
     }
     /**
     * 能力值
