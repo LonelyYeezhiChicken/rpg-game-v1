@@ -89,4 +89,30 @@ export abstract class Masters {
 
         role.anims.play(this.modelName + 'Walk', true);
     }
+
+    /**
+     * 停止
+     * @param params 場景
+     * @param role 角色
+     * @param direction 方向 
+     */
+    public stop(params: any, role: any, direction: string): void {
+        params.anims.create({
+            key: this.modelName + 'Stop',
+            frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.stop),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        role.anims.stop();
+        if (direction === 'left') {
+            role.flipX = true;
+        } else if (direction === 'right') {
+            role.flipX = false;
+        }
+
+        role.anims.play(this.modelName + 'Stop', true);
+
+        role.anims.stop();
+    }
 }

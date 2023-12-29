@@ -105,6 +105,7 @@ export class PlayScene extends Phaser.Scene {
         this.bgy = new BadGuy();
         //this.bgy.walk(this, this.badguy, 'left');
         this.bgy.skills(this, this.badguy);
+        this.bgy.stop(this, this.badguy, 'left');
         //this.bgy.dead(this, this.badguy);
 
         switch (this.userChose) {
