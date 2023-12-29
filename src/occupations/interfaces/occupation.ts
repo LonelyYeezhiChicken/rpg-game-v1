@@ -1,6 +1,11 @@
 import { AbilityDto } from "models/dtos/abilityDto";
 
 export abstract class occupation {
+
+    /**
+     * 目前角色直狀態
+     */
+    private isStop: boolean;
     /**
      * 職業名稱
      */
@@ -37,14 +42,18 @@ export abstract class occupation {
      * @returns 技能名稱
      */
     public skills(params: any, role: any): string {
-        params.anims.create({
-            key: this.modelName + 'Skill',
-            frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.skills),
-            frameRate: 10,
-            repeat: -1,
-        });
-        role.anims.play(this.modelName + 'Skill', true);
 
+        // 停止狀態在建立動畫
+        if (this.isStop) {
+            this.isStop = false;
+            params.anims.create({
+                key: this.modelName + 'Skill',
+                frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.skills),
+                frameRate: 10,
+                repeat: -1,
+            });
+            role.anims.play(this.modelName + 'Skill', true);
+        }
         return this.skillName;
     }
     /**
@@ -52,13 +61,19 @@ export abstract class occupation {
      * @param params 場景
     */
     public dead(params: any, role: any): void {
-        params.anims.create({
-            key: this.modelName + 'Dead',
-            frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.dead),
-            frameRate: 10,
-            repeat: -1,
-        });
-        role.anims.play(this.modelName + 'Dead', true);
+
+        // 停止狀態在建立動畫
+        if (this.isStop) {
+            this.isStop = false;
+
+            params.anims.create({
+                key: this.modelName + 'Dead',
+                frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.dead),
+                frameRate: 10,
+                repeat: -1,
+            });
+            role.anims.play(this.modelName + 'Dead', true);
+        }
     }
 
     /**
@@ -67,12 +82,6 @@ export abstract class occupation {
      * @param direction 方向
      */
     public walk(params: any, role: any, direction: string): void {
-        params.anims.create({
-            key: this.modelName + 'Walk',
-            frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.walk),
-            frameRate: 10,
-            repeat: -1,
-        });
         if (direction === 'left') {
             role.flipX = true;
             role.x -= 2
@@ -85,9 +94,29 @@ export abstract class occupation {
             role.x += 2
         }
 
-        role.anims.play(this.modelName + 'Walk', true);
+
+        // 停止狀態在建立動畫
+        if (this.isStop) {
+            this.isStop = false;
+
+            params.anims.create({
+                key: this.modelName + 'Walk',
+                frames: params.anims.generateFrameNumbers(this.modelName, this.startAndEnd.walk),
+                frameRate: 10,
+                repeat: -1,
+            });
+            role.anims.play(this.modelName + 'Walk', true);
+        }
+
+
     }
 
+    /**
+     * 停止動作
+     * @param params 場景
+     * @param role 角色
+     * @param direction 方向 
+     */
     public stop(params: any, role: any, direction: string): void {
         params.anims.create({
             key: this.modelName + 'Stop',
@@ -106,5 +135,7 @@ export abstract class occupation {
         role.anims.play(this.modelName + 'Stop', true);
 
         role.anims.stop();
+
+        this.isStop = true;
     }
 }
