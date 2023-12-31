@@ -43,6 +43,16 @@
       },
       {
         "type": "image",
+        "key": "ack",
+        "url": "./src/assets/others/mobileKeyboard/ack.png"
+      },
+      {
+        "type": "image",
+        "key": "direction",
+        "url": "./src/assets/others/mobileKeyboard/direction.png"
+      },
+      {
+        "type": "image",
         "key": "info",
         "url": "./src/assets/roles/info.png"
       },
