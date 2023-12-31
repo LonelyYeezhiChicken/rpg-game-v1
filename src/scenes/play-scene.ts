@@ -19,12 +19,20 @@ export class PlayScene extends Phaser.Scene {
     private isAck: boolean = false;
     private skillNameText: Phaser.GameObjects.Text;
 
+    private isMobile: boolean;
+    private leftButton: Phaser.GameObjects.Sprite;
+    private rightButton: Phaser.GameObjects.Sprite;
+    private upButton: Phaser.GameObjects.Sprite;
+    private downButton: Phaser.GameObjects.Sprite;
+    private skillButton: Phaser.GameObjects.Sprite;
+
     constructor() {
         super({
             key: "PlayScene"
         });
         this.opRepo = new OccupationRepository(new LocalStorageDao());
         this.sceneUtil = new SceneUtil(this);
+
     }
 
     /** 建立角色
@@ -94,6 +102,8 @@ export class PlayScene extends Phaser.Scene {
    * 生成物件
    */
     create(): void {
+
+        this.isMobile = this.sys.game.device.os.iOS || this.sys.game.device.os.android;
         // 1. 背景
         // 取得寬高
         let width: number = <number>this.sys.game.config.width / 2;
@@ -108,10 +118,8 @@ export class PlayScene extends Phaser.Scene {
         this.createAllRole();
 
         this.bgy = new BadGuy();
-        //this.bgy.walk(this, this.badguy, Direction.left);
         this.bgy.skills(this, this.badguy);
         this.bgy.stop(this, this.badguy, Direction.left);
-        //this.bgy.dead(this, this.badguy);
 
         switch (this.userChose) {
             case OpKind.warrior:
@@ -124,9 +132,94 @@ export class PlayScene extends Phaser.Scene {
                 this.userRole = new Mage();
                 break;
         }
-        // this.userRole.walk(this, this.user, Direction.right);
-        //this.userRole.dead(this, this.user);
         this.userRole.stop(this, this.user, Direction.right);
+
+        // 手機版
+        if (this.isMobile) {
+            const w = <number>this.sys.game.config.width - 50;
+            const h = <number>this.sys.game.config.height - 50;
+
+            this.leftButton = this.add.sprite(50, h, 'direction')
+                .setScale(0.5, 0.3)
+                .setAngle(90)
+                .setInteractive();
+
+            this.rightButton = this.add.sprite(150, h, 'direction')
+                .setScale(0.5, 0.3)
+                .setAngle(270)
+                .setInteractive();
+
+            this.upButton = this.add.sprite(100, h - 25, 'direction')
+                .setScale(0.5, 0.3)
+                .setAngle(180)
+                .setInteractive();
+
+            this.downButton = this.add.sprite(100, h + 25, 'direction')
+                .setScale(0.5, 0.3)
+                .setInteractive();
+
+            this.skillButton = this.add.sprite(w, h, 'ack')
+                .setScale(0.5, 0.5)
+                .setInteractive();
+
+            this.leftButton.on('pointerdown', () => this.handleMove(Direction.left, true));
+            this.rightButton.on('pointerdown', () => this.handleMove(Direction.right, true));
+            this.upButton.on('pointerdown', () => this.handleMove(Direction.up, true));
+            this.downButton.on('pointerdown', () => this.handleMove(Direction.down, true));
+            this.skillButton.on('pointerdown', () => this.handleSkill(true));
+
+            this.leftButton.on('pointerup', () => this.handleMove(Direction.left, false));
+            this.rightButton.on('pointerup', () => this.handleMove(Direction.right, false));
+            this.upButton.on('pointerup', () => this.handleMove(Direction.up, false));
+            this.downButton.on('pointerup', () => this.handleMove(Direction.down, false));
+            this.skillButton.on('pointerup', () => this.handleSkill(false));
+        }
+    }
+
+
+    private handleMove(direction: Direction, isDown: boolean): void {
+        switch (direction) {
+            case Direction.left:
+                if (isDown)
+                    this.input.keyboard.createCursorKeys().left.isDown = true;
+                else
+                    this.input.keyboard.createCursorKeys().left.isDown = false;
+                break;
+            case Direction.right:
+                if (isDown)
+                    this.input.keyboard.createCursorKeys().right.isDown = true;
+                else
+                    this.input.keyboard.createCursorKeys().right.isDown = false;
+                break;
+            case Direction.up:
+                if (isDown)
+                    this.input.keyboard.createCursorKeys().up.isDown = true;
+                else
+                    this.input.keyboard.createCursorKeys().up.isDown = false;
+                break;
+            case Direction.down:
+                if (isDown)
+                    this.input.keyboard.createCursorKeys().down.isDown = true;
+                else
+                    this.input.keyboard.createCursorKeys().down.isDown = false;
+                break;
+        }
+    }
+
+    private handleSkill(isDown: boolean): void {
+        if (isDown)
+            this.input.keyboard.createCursorKeys().space.isDown = true;
+        else
+            this.input.keyboard.createCursorKeys().space.isDown = false;
+    }
+
+    /**電腦版走路
+     * 
+     * @param cursorKeys 
+     */
+    private pcController(cursorKeys: Phaser.Input.Keyboard.CursorKeys): void {
+
+
     }
 
     update(time: number, delta: number): void {
@@ -156,7 +249,6 @@ export class PlayScene extends Phaser.Scene {
         // 技能
         if (cursorKeys.space.isDown) {
             const sk = this.userRole.skills(this, this.user);
-            console.log('skill Name', sk);
             this.skillNameText.setText('Skill: ' + sk);
             this.isAck = true;
         } else {
@@ -167,5 +259,4 @@ export class PlayScene extends Phaser.Scene {
             }
         }
     }
-
 }
