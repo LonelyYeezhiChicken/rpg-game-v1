@@ -3,9 +3,11 @@ import { OpKind, Direction } from "../models/enums/index";
 import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation } from "../occupations/index";
 import { LocalStorageDao } from "../dao/index";
 import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
+import { SceneUtil } from "../utils/index";
 
 
 export class PlayScene extends Phaser.Scene {
+    private sceneUtil: SceneUtil;
     private readonly opRepo: OccupationRepo;
     private badguy: Phaser.GameObjects.Sprite;
     private user: Phaser.GameObjects.Sprite;
@@ -22,6 +24,7 @@ export class PlayScene extends Phaser.Scene {
             key: "PlayScene"
         });
         this.opRepo = new OccupationRepository(new LocalStorageDao());
+        this.sceneUtil = new SceneUtil(this);
     }
 
     /** 建立角色
@@ -99,7 +102,7 @@ export class PlayScene extends Phaser.Scene {
         // 設定位置
         bg.setPosition(width, height);
 
-        this.skillNameText = this.add.text(10, 10, '', { font: '16px Arial', fill: '#ffffff' });
+        this.skillNameText = this.add.text(10, 10, '', SceneUtil.textStyle());
         this.userChose = this.opRepo.getUserRole();
         // 2. 建立角色
         this.createAllRole();

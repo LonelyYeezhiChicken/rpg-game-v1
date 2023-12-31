@@ -1,11 +1,11 @@
 {
   "RpgGame": {
     "files": [
-      { 
-      "type": "bitmapFont",
-      "key": "font",
-      "textureURL": "./src/assets/font/font.png",
-      "fontDataURL": "./src/assets/font/font.fnt"
+      {
+        "type": "bitmapFont",
+        "key": "font",
+        "textureURL": "./src/assets/font/font.png",
+        "fontDataURL": "./src/assets/font/font.fnt"
       },
       {
         "type": "image",
@@ -34,8 +34,13 @@
       }
     ]
   },
-  "GameRoles":{
+  "GameRoles": {
     "files": [
+      {
+        "type": "image",
+        "key": "gameStart",
+        "url": "./src/assets/others/start/gameStart.png"
+      },
       {
         "type": "image",
         "key": "info",
@@ -65,7 +70,7 @@
         "type": "image",
         "key": "mageLogo",
         "url": "./src/assets/roles/mageLogo.png"
-      }, 
+      },
       {
         "type": "image",
         "key": "warriorLogo",
