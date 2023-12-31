@@ -18,6 +18,7 @@ export class RolesScene extends Phaser.Scene {
     private roleInfo: Phaser.GameObjects.Sprite;
     private close: Phaser.GameObjects.Sprite;
     private line: Phaser.GameObjects.Sprite;
+    private nextBtn: Phaser.GameObjects.Sprite;
     private infoWarArr: Array<Phaser.GameObjects.Text>;
     private infoTankArr: Array<Phaser.GameObjects.Text>;
     private infoMageArr: Array<Phaser.GameObjects.Text>;
@@ -25,6 +26,7 @@ export class RolesScene extends Phaser.Scene {
     private tan: occupation;
     private mag: occupation;
     private nowRole: OpKind;
+    private nextText: Phaser.GameObjects.Text;
     private pointStart: number;
     private lineStartX: number;
     private lineStartY: number;
@@ -125,6 +127,7 @@ export class RolesScene extends Phaser.Scene {
      * @param name 
      */
     private clickProfilePicture(name: OpKind): void {
+        this.nextText.setText('');
         if (this.isOpenInfo === true)
             return;
 
@@ -233,6 +236,19 @@ export class RolesScene extends Phaser.Scene {
                 break;
         }
     }
+    /**確定角色
+     * 
+     */
+    private next(): void {
+        if (this.isOpenInfo === false) {
+            this.nextText.setText('請先選角色');
+            return;
+        }
+
+        this.game.scene.start("PlayScene");
+        this.game.scene.remove("RolesScene");
+    }
+
     /**
      * 載入素材
      */
@@ -245,8 +261,8 @@ export class RolesScene extends Phaser.Scene {
     }
 
     /**
-   * 生成物件
-   */
+     *  生成物件
+     */
     create(): void {
         // 1. 背景
         // 取得寬高
@@ -286,6 +302,16 @@ export class RolesScene extends Phaser.Scene {
             frame: 0,
             key: "info"
         }).setScale(1.5, 1.5);
+
+        // 6. 下一頁按鈕
+        this.add.sprite(width + 250, 270, "gameStart")
+            .setScale(0.5, 0.4)
+            .setInteractive()
+            .on("pointerdown", () => {
+                this.next();
+            });
+
+        this.nextText = this.add.text(width + 40, 250, '', SceneUtil.textStyle());
 
         this.close = this.add.sprite(465, 45, "close", 0)
             .setScale(0.5, 0.5)

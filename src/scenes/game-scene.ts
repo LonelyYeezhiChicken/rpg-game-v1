@@ -59,7 +59,6 @@ export class GameScene extends Phaser.Scene {
     */
     startGame(): void {
         this.opRepo.createRole(this.createNewRole());
-        //this.game.scene.start("PlayScene");
         this.game.scene.start("RolesScene");
         this.game.scene.remove("GameScene");
     }

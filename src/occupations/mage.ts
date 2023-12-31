@@ -20,7 +20,8 @@ export class Mage extends occupation {
     public readonly startAndEnd: any = {
         skills: { start: 0, end: 4 },
         dead: { start: 5, end: 9 },
-        walk: { start: 11, end: 16 }
+        walk: { start: 11, end: 16 },
+        stop: { start: 0, end: 0 },
     }
 
     /**
