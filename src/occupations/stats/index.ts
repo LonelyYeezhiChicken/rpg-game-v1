@@ -1,1 +1,0 @@
-export { HealthPoint } from './healthPoint'

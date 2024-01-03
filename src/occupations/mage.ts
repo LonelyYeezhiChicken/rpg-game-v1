@@ -1,5 +1,5 @@
 import { occupation } from "./interfaces/occupation";
-import { AbilityDto } from "models/dtos/abilityDto";
+import { AbilityDto } from "models/index";
 
 export class Mage extends occupation {
     /**

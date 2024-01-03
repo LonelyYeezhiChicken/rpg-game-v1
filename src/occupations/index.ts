@@ -1,6 +1,6 @@
 export * from './interfaces/index'
 export * from './setOccupations/index'
-export * from './stats/index'
+export * from './gameMechanics/index'
 export { Mage } from './mage'
 export { Tank } from './tank'
 export { Warrior } from './warrior'

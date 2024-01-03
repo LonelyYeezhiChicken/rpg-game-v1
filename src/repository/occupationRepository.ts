@@ -1,5 +1,5 @@
 
-import { AbilityDto } from "../models/dtos/abilityDto";
+import { AbilityDto } from "../models/dtos/ability.dto";
 import { OpKind } from "../models/enums/opKind";
 import { Dao } from "../dao/index"
 
