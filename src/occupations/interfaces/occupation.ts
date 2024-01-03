@@ -1,6 +1,13 @@
-import { AbilityDto } from "models/index";
+import { AbilityDto, OpKind } from "models/index";
+import { OccupationRepo, OccupationRepository } from '../../repository/index';
+import { LocalStorageDao } from '../../dao/index'
 
 export abstract class occupation {
+    private readonly occupationRepo: OccupationRepo;
+
+    constructor() {
+        this.occupationRepo = new OccupationRepository(new LocalStorageDao());
+    }
 
     /**
      * 目前角色直狀態
@@ -22,6 +29,10 @@ export abstract class occupation {
      * 各式起始與結束
      */
     public abstract readonly startAndEnd: any;
+    /**
+     * 職業
+     */
+    public abstract readonly kind: OpKind;
 
     /**
      * 能力值倍率計算
@@ -35,7 +46,13 @@ export abstract class occupation {
     /**
      * 能力值
      */
-    public abstract ability(data: AbilityDto): any;
+    public abstract ability(data: AbilityDto): AbilityDto;
+
+    /**取得能力值 */
+    public getAbility(): AbilityDto {
+        return this.occupationRepo.Load(this.kind);
+    }
+
     /**
      * 技能
      * @param params 場景

@@ -7,22 +7,22 @@ export class HealthPointService implements HealthPointInterface {
     private health: HealthPointDto;
     private healthPointRepo: HealthPointRepository;
 
-    constructor(hp: number) {
-        this.setData(hp);
+    constructor(hp: number, role: string) {
+        this.setData(hp, role);
     }
 
     /**建立血量資訊
      * 
      * @param hp 最大血量
      */
-    private setData(hp: number): void {
+    private setData(hp: number, role: string): void {
         this.health = {
             maxHealth: hp,
             currentHealth: hp,
             healthPercentage: 100
         };
 
-        this.healthPointRepo = new HealthPointRepository();
+        this.healthPointRepo = new HealthPointRepository(role);
         this.healthPointRepo.create(this.health);
     }
 
@@ -66,7 +66,7 @@ export class HealthPointService implements HealthPointInterface {
         let currentHealth = this.health.currentHealth;
 
         // 減少目前血量
-        currentHealth = Math.min(currentHealth - damage, 0);
+        currentHealth = Math.max(currentHealth - damage, 0);
 
         // 更新血量百分比
         const healthPercentage = (currentHealth / this.health.maxHealth) * 100;

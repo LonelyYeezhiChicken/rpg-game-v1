@@ -1,14 +1,15 @@
 import { BadGuy, SetBadGuy, Masters } from "../masters/index";
-import { OpKind, Direction } from "../models/enums/index";
-import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation } from "../occupations/index";
+import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation, HealthPoint } from "../occupations/index";
 import { LocalStorageDao } from "../dao/index";
 import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
 import { SceneUtil } from "../utils/index";
+import { AbilityDto, OpKind, Direction } from "../models/index";
 
 
 export class PlayScene extends Phaser.Scene {
     private sceneUtil: SceneUtil;
     private readonly opRepo: OccupationRepo;
+    private hp: HealthPoint;
     private badguy: Phaser.GameObjects.Sprite;
     private user: Phaser.GameObjects.Sprite;
     private bgy: Masters;
@@ -18,6 +19,7 @@ export class PlayScene extends Phaser.Scene {
     private lastDirection: Direction;
     private isAck: boolean = false;
     private skillNameText: Phaser.GameObjects.Text;
+    private userAbility: AbilityDto;
 
     private isMobile: boolean;
     private leftButton: Phaser.GameObjects.Sprite;
@@ -33,6 +35,12 @@ export class PlayScene extends Phaser.Scene {
         this.opRepo = new OccupationRepository(new LocalStorageDao());
         this.sceneUtil = new SceneUtil(this);
 
+    }
+
+    private createStatus(): void {
+        const userHealth: number = this.userAbility.health;
+        console.log('user hp', userHealth);
+        this.hp = new HealthPoint(this, 500, 20, userHealth, "user",);
     }
 
     /** 建立角色
@@ -134,6 +142,10 @@ export class PlayScene extends Phaser.Scene {
         }
         this.userRole.stop(this, this.user, Direction.right);
 
+        // 讀取能力值
+        this.userAbility = this.userRole.getAbility();
+
+        this.createStatus();
         // 手機版
         if (this.isMobile) {
             const w = <number>this.sys.game.config.width - 50;
@@ -213,15 +225,6 @@ export class PlayScene extends Phaser.Scene {
             this.input.keyboard.createCursorKeys().space.isDown = false;
     }
 
-    /**電腦版走路
-     * 
-     * @param cursorKeys 
-     */
-    private pcController(cursorKeys: Phaser.Input.Keyboard.CursorKeys): void {
-
-
-    }
-
     update(time: number, delta: number): void {
         const cursorKeys = this.input.keyboard.createCursorKeys();
 
@@ -250,6 +253,8 @@ export class PlayScene extends Phaser.Scene {
         if (cursorKeys.space.isDown) {
             const sk = this.userRole.skills(this, this.user);
             this.skillNameText.setText('Skill: ' + sk);
+            // this.hp.takeDamage(this.userAbility.attack);
+            this.hp.takeDamage(5);
             this.isAck = true;
         } else {
             if (this.isAck) {

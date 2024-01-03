@@ -39,12 +39,12 @@
       {
         "type": "image",
         "key": "healthPoint",
-        "url": "./src/assets/others/status/hp/healthPoint.png"
+        "url": "./src/assets/status/hp/healthPoint.png"
       },
       {
         "type": "image",
         "key": "hp",
-        "url": "./src/assets/others/status/hp/hp.png"
+        "url": "./src/assets/status/hp/hp.png"
       },
       {
         "type": "image",

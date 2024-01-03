@@ -5,8 +5,8 @@ export class HealthPointRepository {
     private readonly firstKey: string;
     private readonly dao: Dao;
 
-    constructor() {
-        this.firstKey = "HealthPointRepository";
+    constructor(role: string) {
+        this.firstKey = "HealthPointRepository" + role;
         this.dao = new CookieDao();
     }
 
