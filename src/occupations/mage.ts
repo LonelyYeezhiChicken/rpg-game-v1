@@ -1,5 +1,5 @@
 import { occupation } from "./interfaces/occupation";
-import { AbilityDto } from "models/dtos/abilityDto";
+import { AbilityDto, OpKind } from "../models/index";
 
 export class Mage extends occupation {
     /**
@@ -14,6 +14,11 @@ export class Mage extends occupation {
      * 模組名稱
      */
     public modelName: string = 'mage';
+    /**
+     * 職業
+     */
+    public readonly kind: OpKind = OpKind.mage;
+
     /**
      * 各式起始與結束
      */

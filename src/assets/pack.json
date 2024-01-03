@@ -38,6 +38,16 @@
     "files": [
       {
         "type": "image",
+        "key": "healthPoint",
+        "url": "./src/assets/status/hp/healthPoint.png"
+      },
+      {
+        "type": "image",
+        "key": "hp",
+        "url": "./src/assets/status/hp/hp.png"
+      },
+      {
+        "type": "image",
         "key": "gameStart",
         "url": "./src/assets/others/start/gameStart.png"
       },

@@ -1,5 +1,5 @@
 import { occupation } from "./interfaces/occupation";
-import { AbilityDto } from "models/dtos/abilityDto";
+import { AbilityDto, OpKind } from "../models/index";
 
 export class Tank extends occupation {
 
@@ -15,6 +15,10 @@ export class Tank extends occupation {
      * 模組名稱
      */
     public modelName: string = 'tank';
+    /**
+     * 職業
+     */
+    public readonly kind: OpKind = OpKind.tank;
     /**
      * 各式起始與結束
      */

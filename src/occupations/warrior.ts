@@ -1,9 +1,7 @@
 import { occupation } from "./interfaces/occupation";
-import { AbilityDto } from "models/dtos/abilityDto";
+import { AbilityDto, OpKind } from "../models/index";
 
 export class Warrior extends occupation {
-
-
     /**
      * 職業名稱
      */
@@ -16,6 +14,12 @@ export class Warrior extends occupation {
      * 模組名稱
      */
     public readonly modelName: string = 'warrior';
+
+    /**
+    * 職業
+    */
+    public readonly kind: OpKind = OpKind.warrior;
+
     /**
      * 各式起始與結束
      */

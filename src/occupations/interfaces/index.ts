@@ -1,1 +1,1 @@
-export { occupation } from './occupation'
+export { occupation } from './occupation';

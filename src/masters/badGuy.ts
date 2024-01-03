@@ -1,5 +1,5 @@
 import { Masters } from "./interfaces/master";
-import { AbilityDto } from "../models/dtos/abilityDto";
+import { AbilityDto } from "../models/dtos/ability.dto";
 
 
 export class BadGuy extends Masters {
