@@ -41,6 +41,8 @@ export class PlayScene extends Phaser.Scene {
     private unsubscribeXpEvents: () => void;
     private unsubscribeLevelUpEvents: () => void;
     private unsubscribeAI: () => void;
+    private unsubscribeMoveAI: () => void; // New unsubscribe for move event
+    private unsubscribeStopAI: () => void; // New unsubscribe for stop event
 
     constructor() {
         super({
@@ -66,6 +68,12 @@ export class PlayScene extends Phaser.Scene {
         }
         if (this.unsubscribeAI) {
             this.unsubscribeAI();
+        }
+        if (this.unsubscribeMoveAI) {
+            this.unsubscribeMoveAI();
+        }
+        if (this.unsubscribeStopAI) {
+            this.unsubscribeStopAI();
         }
         // Also shut down the BadGuy's AI if it has a shutdown method
         if (this.bgy && typeof this.bgy.shutdown === 'function') {
@@ -110,6 +118,19 @@ export class PlayScene extends Phaser.Scene {
                 console.log(`${this.bgy.name} (${enemyId}) attacks player at:`, playerPosition);
                 this.bgy.skills(this, this.badguy); // Trigger BadGuy's attack animation
                 this.hpService.takeDamage(this.userAbility.attack); // Player takes damage
+            }
+        });
+
+        // Listen for enemy movement commands
+        this.unsubscribeMoveAI = enemyAIEvents.on('enemy-command-move', (enemyId: string, direction: Direction) => {
+            if (this.bgy && this.badguy && enemyId === this.bgy.modelName) {
+                this.bgy.walk(this, this.badguy, direction);
+            }
+        });
+
+        this.unsubscribeStopAI = enemyAIEvents.on('enemy-command-stop', (enemyId: string, direction: Direction) => {
+            if (this.bgy && this.badguy && enemyId === this.bgy.modelName) {
+                this.bgy.stop(this, this.badguy, direction);
             }
         });
     }
@@ -197,6 +218,8 @@ export class PlayScene extends Phaser.Scene {
         this.createAllRole();
 
         this.bgy = new BadGuy();
+        this.bgy.setSprite(this.badguy); // Pass the sprite to the BadGuy instance
+
         this.bgy.skills(this, this.badguy);
         this.bgy.stop(this, this.badguy, Direction.left);
 

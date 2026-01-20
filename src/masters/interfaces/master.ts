@@ -35,12 +35,15 @@ export abstract class Masters {
     public abstract aiUpdate(currentTime: number, playerPosition: { x: number, y: number }, enemyPosition: { x: number, y: number }): void;
 
     public abstract shutdown(): void;
+
+    public abstract setSprite(sprite: Phaser.GameObjects.Sprite): void;
     /**
      * 技能
      * @param params 場景
      * @returns 技能名稱
      */
     public skills(params: any, role: any): string {
+        console.log("Masters.skills called for:", this.modelName);
         role.flipX = true;
         params.anims.create({
             key: this.modelName + 'Skill',
@@ -116,7 +119,5 @@ export abstract class Masters {
         }
 
         role.anims.play(this.modelName + 'Stop', true);
-
-        role.anims.stop();
     }
 }
