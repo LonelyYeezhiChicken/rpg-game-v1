@@ -1,4 +1,4 @@
-import { AbilityDto } from "models/index";
+import { AbilityDto } from "../../models/index";
 
 export abstract class Masters {
     /**
