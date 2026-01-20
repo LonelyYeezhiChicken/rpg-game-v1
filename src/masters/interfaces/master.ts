@@ -31,6 +31,10 @@ export abstract class Masters {
      * 能力值
      */
     public abstract ability(data: AbilityDto): any;
+
+    public abstract aiUpdate(currentTime: number, playerPosition: { x: number, y: number }, enemyPosition: { x: number, y: number }): void;
+
+    public abstract shutdown(): void;
     /**
      * 技能
      * @param params 場景

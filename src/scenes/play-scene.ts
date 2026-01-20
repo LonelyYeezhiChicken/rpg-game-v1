@@ -6,6 +6,9 @@ import { SceneUtil } from "../utils/index";
 import { AbilityDto, OpKind, Direction } from "../models/index";
 
 
+import { enemyAIEvents } from "../occupations/gameMechanics/ai/enemy.ai.events";
+
+
 export class PlayScene extends Phaser.Scene {
     private sceneUtil: SceneUtil;
     private readonly opRepo: OccupationRepo;
@@ -37,6 +40,7 @@ export class PlayScene extends Phaser.Scene {
     private unsubscribeManaEvents: () => void;
     private unsubscribeXpEvents: () => void;
     private unsubscribeLevelUpEvents: () => void;
+    private unsubscribeAI: () => void;
 
     constructor() {
         super({
@@ -59,6 +63,13 @@ export class PlayScene extends Phaser.Scene {
         }
         if (this.unsubscribeLevelUpEvents) {
             this.unsubscribeLevelUpEvents();
+        }
+        if (this.unsubscribeAI) {
+            this.unsubscribeAI();
+        }
+        // Also shut down the BadGuy's AI if it has a shutdown method
+        if (this.bgy && typeof this.bgy.shutdown === 'function') {
+            this.bgy.shutdown();
         }
     }
 
@@ -92,6 +103,14 @@ export class PlayScene extends Phaser.Scene {
         this.unsubscribeLevelUpEvents = levelEvents.on('level-up', (level: number) => {
             console.log(`Leveled up to: ${level}`);
             // Potentially show a level up effect or message
+        });
+
+        this.unsubscribeAI = enemyAIEvents.on('enemy-attack', (enemyId: string, playerPosition: { x: number, y: number }) => {
+            if (this.bgy && this.badguy) { // Ensure BadGuy instance and sprite exist
+                console.log(`${this.bgy.name} (${enemyId}) attacks player at:`, playerPosition);
+                this.bgy.skills(this, this.badguy); // Trigger BadGuy's attack animation
+                this.hpService.takeDamage(this.userAbility.attack); // Player takes damage
+            }
         });
     }
 
@@ -300,6 +319,13 @@ export class PlayScene extends Phaser.Scene {
                 this.isMoving = false;
             }
         }
+
+        // AI update for BadGuy
+        // Assuming player and enemy have position properties
+        const playerPosition = { x: this.user.x, y: this.user.y };
+        const enemyPosition = { x: this.badguy.x, y: this.badguy.y };
+        this.bgy.aiUpdate(time, playerPosition, enemyPosition);
+
 
         // 技能 (temporarily add XP and use mana for testing)
         if (cursorKeys.space.isDown) {
