@@ -1,5 +1,5 @@
 import { BadGuy, SetBadGuy, Masters } from "../masters/index";
-import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation, HealthPoint } from "../occupations/index";
+import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation, HealthBar, HealthService, healthEvents, ManaBar, ManaService, manaEvents, LevelBar, LevelService, levelEvents } from "../occupations/index";
 import { LocalStorageDao } from "../dao/index";
 import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
 import { SceneUtil } from "../utils/index";
@@ -9,7 +9,12 @@ import { AbilityDto, OpKind, Direction } from "../models/index";
 export class PlayScene extends Phaser.Scene {
     private sceneUtil: SceneUtil;
     private readonly opRepo: OccupationRepo;
-    private hp: HealthPoint;
+    private hpBar: HealthBar;
+    private hpService: HealthService;
+    private manaBar: ManaBar;
+    private manaService: ManaService;
+    private levelBar: LevelBar;
+    private levelService: LevelService;
     private badguy: Phaser.GameObjects.Sprite;
     private user: Phaser.GameObjects.Sprite;
     private bgy: Masters;
@@ -28,6 +33,11 @@ export class PlayScene extends Phaser.Scene {
     private downButton: Phaser.GameObjects.Sprite;
     private skillButton: Phaser.GameObjects.Sprite;
 
+    private unsubscribeHealthEvents: () => void;
+    private unsubscribeManaEvents: () => void;
+    private unsubscribeXpEvents: () => void;
+    private unsubscribeLevelUpEvents: () => void;
+
     constructor() {
         super({
             key: "PlayScene"
@@ -37,14 +47,56 @@ export class PlayScene extends Phaser.Scene {
 
     }
 
+    shutdown() {
+        if (this.unsubscribeHealthEvents) {
+            this.unsubscribeHealthEvents();
+        }
+        if (this.unsubscribeManaEvents) {
+            this.unsubscribeManaEvents();
+        }
+        if (this.unsubscribeXpEvents) {
+            this.unsubscribeXpEvents();
+        }
+        if (this.unsubscribeLevelUpEvents) {
+            this.unsubscribeLevelUpEvents();
+        }
+    }
+
     private createStatus(): void {
         const userHealth: number = this.userAbility.health;
         console.log('user hp', userHealth);
-        this.hp = new HealthPoint(this, 500, 20, userHealth, "user",);
+        this.hpService = new HealthService(userHealth);
+        this.hpBar = new HealthBar(this, 500, 20);
+        this.hpBar.draw(this.hpService.getHealth(), this.hpService.getMaxHealth());
+
+        this.unsubscribeHealthEvents = healthEvents.on('health-changed', (currentHealth: number, maxHealth: number) => {
+            this.hpBar.draw(currentHealth, maxHealth);
+        });
+
+        const userMana: number = this.userAbility.magic || 100; // Assuming mana ability might be missing, default to 100
+        this.manaService = new ManaService(userMana);
+        this.manaBar = new ManaBar(this, 500, 40); // Position below health bar
+        this.manaBar.draw(this.manaService.getMana(), this.manaService.getMaxMana());
+
+        this.unsubscribeManaEvents = manaEvents.on('mana-changed', (currentMana: number, maxMana: number) => {
+            this.manaBar.draw(currentMana, maxMana);
+        });
+
+        this.levelService = new LevelService(); // Assuming initial level 1, 0 XP
+        this.levelBar = new LevelBar(this, 500, 60); // Position below mana bar
+        this.levelBar.draw(this.levelService.getCurrentXp(), this.levelService.getXpForNextLevel(), this.levelService.getLevel());
+
+        this.unsubscribeXpEvents = levelEvents.on('xp-changed', (currentXp: number, xpForNextLevel: number, currentLevel: number) => {
+            this.levelBar.draw(currentXp, xpForNextLevel, currentLevel);
+        });
+        this.unsubscribeLevelUpEvents = levelEvents.on('level-up', (level: number) => {
+            console.log(`Leveled up to: ${level}`);
+            // Potentially show a level up effect or message
+        });
     }
 
     /** 建立角色
-     * 
+     *
      */
     private createAllRole(): void {
         // 新增角色(反派)
@@ -249,12 +301,14 @@ export class PlayScene extends Phaser.Scene {
             }
         }
 
-        // 技能
+        // 技能 (temporarily add XP and use mana for testing)
         if (cursorKeys.space.isDown) {
             const sk = this.userRole.skills(this, this.user);
             this.skillNameText.setText('Skill: ' + sk);
-            // this.hp.takeDamage(this.userAbility.attack);
-            this.hp.takeDamage(5);
+            this.hpService.takeDamage(5);
+            if (this.manaService.useMana(10)) { // Use mana if available
+                this.levelService.addXp(20); // Gain XP when using skill and mana
+            }
             this.isAck = true;
         } else {
             if (this.isAck) {

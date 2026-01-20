@@ -1,3 +1,3 @@
-export { HealthPointService } from './healthPoint.service'
-export { HealthPointInterface } from './healthPoint.interface'
-export { HealthPoint } from './healthPoint'
+export { HealthBar } from './healthBar';
+export { HealthService } from './healthService';
+export { healthEvents } from './health.events';

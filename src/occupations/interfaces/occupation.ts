@@ -1,4 +1,4 @@
-import { AbilityDto, OpKind } from "models/index";
+import { AbilityDto, OpKind } from "../../models/index";
 import { OccupationRepo, OccupationRepository } from '../../repository/index';
 import { LocalStorageDao } from '../../dao/index'
 
