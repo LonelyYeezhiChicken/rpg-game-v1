@@ -1,5 +1,5 @@
 import { BadGuy, SetBadGuy, Masters } from "../masters/index";
-import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation, HealthPoint } from "../occupations/index";
+import { Warrior, Tank, Mage, SetWarrior, SetTank, SetMage, occupation, HealthBar, HealthService, healthEvents } from "../occupations/index";
 import { LocalStorageDao } from "../dao/index";
 import { OccupationRepo, OccupationRepository } from "../repository/occupationRepository";
 import { SceneUtil } from "../utils/index";
@@ -9,7 +9,8 @@ import { AbilityDto, OpKind, Direction } from "../models/index";
 export class PlayScene extends Phaser.Scene {
     private sceneUtil: SceneUtil;
     private readonly opRepo: OccupationRepo;
-    private hp: HealthPoint;
+    private hpBar: HealthBar;
+    private hpService: HealthService;
     private badguy: Phaser.GameObjects.Sprite;
     private user: Phaser.GameObjects.Sprite;
     private bgy: Masters;
@@ -28,6 +29,8 @@ export class PlayScene extends Phaser.Scene {
     private downButton: Phaser.GameObjects.Sprite;
     private skillButton: Phaser.GameObjects.Sprite;
 
+    private unsubscribeHealthEvents: () => void;
+
     constructor() {
         super({
             key: "PlayScene"
@@ -37,10 +40,22 @@ export class PlayScene extends Phaser.Scene {
 
     }
 
+    shutdown() {
+        if (this.unsubscribeHealthEvents) {
+            this.unsubscribeHealthEvents();
+        }
+    }
+
     private createStatus(): void {
         const userHealth: number = this.userAbility.health;
         console.log('user hp', userHealth);
-        this.hp = new HealthPoint(this, 500, 20, userHealth, "user",);
+        this.hpService = new HealthService(userHealth);
+        this.hpBar = new HealthBar(this, 500, 20);
+        this.hpBar.draw(this.hpService.getHealth(), this.hpService.getMaxHealth());
+
+        this.unsubscribeHealthEvents = healthEvents.on('health-changed', (currentHealth: number, maxHealth: number) => {
+            this.hpBar.draw(currentHealth, maxHealth);
+        });
     }
 
     /** 建立角色
@@ -254,7 +269,7 @@ export class PlayScene extends Phaser.Scene {
             const sk = this.userRole.skills(this, this.user);
             this.skillNameText.setText('Skill: ' + sk);
             // this.hp.takeDamage(this.userAbility.attack);
-            this.hp.takeDamage(5);
+            this.hpService.takeDamage(5);
             this.isAck = true;
         } else {
             if (this.isAck) {

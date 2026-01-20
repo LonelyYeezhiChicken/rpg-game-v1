@@ -4,15 +4,20 @@
   "description": "Star fall game (Phaser 3 + TypeScript)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack",
     "start": "webpack --watch & live-server --port=8085"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "canvas": "^3.2.1",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "live-server": "^1.2.2",
     "phaser": "^3.55.2",
+    "ts-jest": "^29.4.6",
     "ts-loader": "^9.3.1",
     "typescript": "^4.7.4",
     "webpack": "^5.74.0",
